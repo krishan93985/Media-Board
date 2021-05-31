@@ -13,28 +13,6 @@ let maxZoom = 3;
 let minZoom = 1;
 let currZoom = 1;
 
-let zoomInBtn = document.getElementById("in");
-let zoomOutBtn = document.getElementById("out");
-
-// zoomInBtn.addEventListener("click", function () {
-//   let vidScale = Number(
-//     videoPlayer.style.transform.split("(")[1].split(")")[0]
-//   );
-//   if (vidScale < 3) {
-//     currZoom = vidScale + 0.1;
-//     videoPlayer.style.transform = `scale(${currZoom})`;
-//   }
-// });
-// zoomOutBtn.addEventListener("click", function () {
-//   let vidScale = Number(
-//     videoPlayer.style.transform.split("(")[1].split(")")[0]
-//   );
-//   if (vidScale > 1) {
-//     currZoom = vidScale - 0.1;
-//     videoPlayer.style.transform = `scale(${currZoom})`;
-//   }
-// });
-
 let allFilters = document.querySelectorAll(".filter");
 
 for (let i = 0; i < allFilters.length; i++) {
@@ -71,22 +49,29 @@ vidRecordBtn.addEventListener("click", function () {
   }
 });
 
-navigator.mediaDevices.getUserMedia(constraints).then(function (mediaStream) {
+navigator.mediaDevices.getUserMedia(constraints).then(function(mediaStream){
   videoPlayer.srcObject = mediaStream;
-
+})
+navigator.mediaDevices.getDisplayMedia(
+  {video: { mediaSource: "screen" }
+}).then(function (mediaStream) {
+  
   mediaRecorder = new MediaRecorder(mediaStream);
 
-  mediaRecorder.ondataavailable = function (e) {
-    chunks.push(e.data);
-  };
+mediaRecorder.ondataavailable = e => chunks.push(e.data);
+mediaRecorder.onstop = e => {
+  const completeBlob = new Blob(chunks, { type: "video/mp4" });
+  let url = URL.createObjectURL(completeBlob);
+  // let a=document.createElement("a");
+  // a.download="vid.mp4";
+  // a.href=url;
+  // a.click();
+  // a.remove();
+  addMediaToGallery(completeBlob, "video");
 
-  mediaRecorder.onstop = function () {
-    let blob = new Blob(chunks, { type: "video/mp4" });
-    chunks = [];
-    // C4.2
-    addMediaToGallery(blob, "video");
-  };
-});
+};
+})
+
 
 function capture(filter) {
   let c = document.createElement("canvas");

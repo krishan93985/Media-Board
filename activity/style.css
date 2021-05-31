@@ -141,17 +141,19 @@ position: relative;
   }
   
   .video-container {
-    height: 30vh;
-    width: 40vw;
+    height: 25vh;
+    width: 20vw;
     overflow: hidden;
     position: absolute;
     bottom: 0px;
     right:0px;
+    background-color: black;
   }
   
   video {
     height: 100%;
     width: 100%;
+    object-fit:cover;
   }
   
   #record-div,
