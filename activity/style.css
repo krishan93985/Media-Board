@@ -1,33 +1,50 @@
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0px;
+  padding: 0px;
+  width:100%;
+  height:100%;
+  display: block!important;
+}
+.app{
+  display:flex; 
+  flex-direction:column;
+}
 .tool-bar{
+    margin:0;
+    padding:0;
+    width:100%;
     height: 80px;
-    display: flex;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: 1fr 10fr;
 }
 .hamburger{
 height: 90%;
-width:15%;
-background-color: yellow;
+width:100%;
+background-color: grey;
 }
 .tool-panel{
 height:90%;
-width:80%;
+width:100%;
 background-color: lightcoral;
 display: flex;
-justify-content:center
-
+flex-flow:row wrap;
+justify-content:center;
+align-items:center;
 }
 .tool{
-height: 90%;
-position: relative;
-
+height: 4rem;
+width:4rem;
+margin:0px 2px 0px 2px;
 }
 .tool-img{
-    height: 90%;
+    height: 80%;
 }
 .tool-options{
-    position: absolute;
-    top: 75px;
-    left: -61px;
     background: yellow;
     height: 6rem;
     width: 9rem;
@@ -119,22 +136,18 @@ position: relative;
   }
   
   #record-video {
-    position: relative;
-    right: 0.05rem;
-    top: 0.5vh;
-    height: 4rem;
-    width: 4rem;
+    height: 3.5rem;
+    width: 3.5rem;
+    margin:0px 2px 0px 2px;
     border-radius: 50%;
     border: 5.5px solid white;
     background: black;
   }
   
   #click-picture {
-    position: relative;
-    right: 0.1rem;
-    top: 0.5vh;
-    height: 4rem;
-    width: 4rem;
+    height: 3.5rem;
+    width: 3.5rem;
+    margin:0px 2px 0px 2px;
     border-radius: 50%;
     border: 5.5px solid white;
     background: black;
@@ -150,12 +163,23 @@ position: relative;
     background-color: black;
   }
   
+  .slides{
+    position:absolute;
+    display:grid;
+    width:9%;
+    height:100%;
+    gap:1.5rem;
+    grid-template-columns:1fr;
+    background:grey;
+    overflow-y: scroll;
+  }
+
   video {
     height: 100%;
     width: 100%;
     object-fit:cover;
   }
-  
+
   #record-div,
   #click-div {
     height: 70%;
@@ -218,6 +242,11 @@ position: relative;
   .filter-container {
     z-index: 3;
   }
+
+  #record-video,
+  #click-picture{
+    cursor:pointer;
+  }
   
   .zoom {
     z-index: 3;
@@ -241,17 +270,17 @@ position: relative;
   
   /* C5.2 */
   #gallery-button {
-    position: relative;
-    height: 3rem;
+    height: 3.5rem;
     z-index: 2;
-    width: 5rem;
-    right: -81.9vw;
-    top: -111.5vh;
+    width: 4rem;
     border: none;
+    margin:0px 2px 0px 2px;
     outline: none;
     border-radius: 5px;
     background-color: #222;
-    
+    cursor:pointer;
+    font-size: 1rem;
+    color: white;
   }
   
   /* C6.2  */
@@ -314,38 +343,32 @@ position: relative;
     .zoom {
       width: 4rem;
     }
-    #record-video,
-    #click-picture {
-      top: unset;
-      right: unset;
-      bottom: 8rem;
-    }
+
+    /* 
   
     #record-video {
       left: 25rem;
     }
     #click-picture {
       left: 35rem;
-    }
-  
-    #gallery-button {
-      width: 5rem;
-      height: 5rem;
-    }
+    } */
   }
   
-  @media (max-width: 768px) {
-    #record-video {
-      left: 15rem;
-    }
-    #click-picture {
-      left: 25rem;
-    }
+  @media (max-width: 800px) {
     #record-video,
-    #click-picture {
-      bottom: 6rem;
+    #click-picture,
+    .tool {
+       height:2.5rem;
+       width:2.5rem;
+    }    
+
+    #gallery-button{
+      height:2.5rem;
+      width:3.5rem;
+      font-size: 0.7rem;
     }
   }
+
   @media (max-width: 600px) {
     .filter-container {
       height: 10vh;
@@ -357,7 +380,9 @@ position: relative;
       height: 100%;
       width: calc(100% / 6);
     }
-    #record-video,
+
+    
+    /* #record-video,
     #click-picture {
       height: 4rem;
       width: 4rem;
@@ -378,11 +403,29 @@ position: relative;
     #gallery-button {
       width: 3rem;
       height: 3rem;
-    }
+    } */
   
     .zoom {
       right: 0vw;
       width: 12vw;
     }
   }
-  
+
+  @media (max-width: 500px) {
+    #record-video,
+    #click-picture,
+    .tool {
+       height:1.8rem;
+       width:1.8rem;
+    }    
+
+    #gallery-button{
+      height:1.8rem;
+      width:2.5rem;
+      font-size:0.5rem;
+    }
+    .video-container {
+      height: 20vh;
+      width: 30vw;
+    }
+  }

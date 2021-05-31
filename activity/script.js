@@ -1,7 +1,9 @@
 let constraints = { video: true, audio: true };
 
+let canvasBoard = document.querySelector(".board");
 let videoPlayer = document.querySelector("video");
 let vidRecordBtn = document.querySelector("#record-video");
+let hamburger = document.querySelector(".hamburger");
 
 let mediaRecorder;
 let chunks = [];
@@ -70,19 +72,19 @@ mediaRecorder.onstop = e => {
   addMediaToGallery(completeBlob, "video");
 
 };
-})
+}).catch(console.log);
 
 
 function capture(filter) {
   let c = document.createElement("canvas");
-  c.width = videoPlayer.videoWidth;
-  c.height = videoPlayer.videoHeight;
+  c.width = canvasBoard.scrollWidth;
+  c.height = canvasBoard.scrollHeight;
   let ctx = c.getContext("2d");
 
   ctx.translate(c.width / 2, c.height / 2);
   ctx.scale(currZoom, currZoom);
   ctx.translate(-c.width / 2, -c.height / 2);
-  ctx.drawImage(videoPlayer, 0, 0);
+  ctx.drawImage(canvasBoard, 0, 0);
   if (filter !== "") {
     ctx.fillStyle = filter;
     ctx.fillRect(0, 0, c.width, c.height);

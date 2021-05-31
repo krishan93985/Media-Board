@@ -2,7 +2,7 @@
 ctx.lineWidth = 5;
 ctx.lineCap = "round";
 ctx.lineJoin = 'round';
-let activeTool = 'pencil';
+let activeTool = '';
 let pencil = document.querySelector("#pencil");
 let eraser = document.querySelector("#eraser");
 let pencilOptions = document.querySelector("#pencil-options");
@@ -11,20 +11,22 @@ function handleTool(tool) {
 
     if (tool == "pencil") {
         if (activeTool == "pencil") {
-            pencilOptions.classList.add("show");
+            pencilOptions.classList.toggle("show");
         } else {
             ctx.strokeStyle = "black";
             activeTool = "pencil";
             ctx.globalCompositionOperation="source-over";
             eraserOptions.classList.remove("show");
+            pencilOptions.classList.toggle("show");
         }
     } else if (tool == "eraser") {
         if (activeTool == "eraser") {
-            eraserOptions.classList.add("show");
+            eraserOptions.classList.toggle("show");
         } else {
             ctx.strokeStyle = "white";
             activeTool = "eraser";
             ctx.globalCompositionOperation="destination-out";
+            eraserOptions.classList.toggle("show");
             pencilOptions.classList.remove("show");
         }
     } else if (tool == "sticky") {
