@@ -3,17 +3,27 @@ let constraints = { video: true, audio: true };
 let canvasBoard = document.querySelector(".board");
 let videoPlayer = document.querySelector("video");
 let vidRecordBtn = document.querySelector("#record-video");
-let hamburger = document.querySelector(".hamburger");
+let slidePane = document.querySelector(".slides");
+let opener = document.querySelector(".opener");
 
 let mediaRecorder;
 let chunks = [];
 let recordState = false;
+let isSlidesOpen = true;
 
 let filter = "";
 
 let maxZoom = 3;
 let minZoom = 1;
 let currZoom = 1;
+
+const openSlides = () => {
+  slidePane.classList.toggle("grid-show");
+  opener.src = isSlidesOpen?"./close.png":"./hamburger.png";
+  isSlidesOpen = !isSlidesOpen;
+}
+
+opener.addEventListener('click',openSlides);
 
 let allFilters = document.querySelectorAll(".filter");
 

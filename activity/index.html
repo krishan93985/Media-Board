@@ -12,9 +12,14 @@
     <!-- Drawing board -->
     <div class="app">
         <div class="tool-bar">
-            <div class="hamburger"></div>
+            <div class="hamburger">
+                <img alt="icon" src="./hamburger.png" class="opener"/>
+            </div>
             
             <div class="tool-panel">
+            <div class="tool">
+                <img alt="icon" src="./NewIcons/Addpage.svg" class="tool-img"/>
+            </div>
             <div class="tool">
                 <img src="./NewIcons/Black_Pencil.svg" alt="" class="tool-img" id="pencil"
                     onclick="handleTool('pencil')">
@@ -74,9 +79,7 @@
         </div>
     </div>
     <div>
-        <div class="slides">
-            <div>
-            </div>
+        <div class="slides close-slides">
         </div>
         <canvas class="board"></canvas>
     </div>
