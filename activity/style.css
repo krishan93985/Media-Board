@@ -429,3 +429,16 @@ margin:0px 2px 0px 2px;
       width: 30vw;
     }
   }
+  .timming{
+    color:black;
+    position:fixed;
+    bottom:15vh;
+    left:3vw;
+    font-size:1.7rem;
+    font-family: sans-serif;
+    font-weight:600;
+    display:none;
+}
+.timming-active{
+    display: block;
+}
