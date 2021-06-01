@@ -6,13 +6,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Board</title>
     <link rel="stylesheet" href="style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" rel="stylesheet">
+
 </head>
 
 <body>
     <!-- Drawing board -->
     <div class="app">
         <div class="tool-bar">
-            <div class="hamburger"></div>
+            <div class="hamburger">
+                <i class="fas fa-file-plus add-slide" ></i>
+                <i class="fas fa-file-search view-slide"></i>
+            </div>
             
             <div class="tool-panel">
             <div class="tool">
@@ -80,10 +85,12 @@
         </div>
         <canvas class="board"></canvas>
     </div>
-    </div>      
+    </div>  
+    <div class="timming" id="timming">00.00.00</div>    
     <div class="video-container">
         <video autoplay ></video>
     </div>
+
           <!-- C5.1.A  -->
     <script src="dbScript.js"></script>
     <script src="script.js"></script>
