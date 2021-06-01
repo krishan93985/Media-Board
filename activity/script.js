@@ -4,15 +4,17 @@ let timmingElem=document.querySelector("#timming");
 let canvasBoard = document.querySelector(".board");
 let videoPlayer = document.querySelector("video");
 let vidRecordBtn = document.querySelector("#record-video");
-let slidePane = document.querySelector(".slides");
 let opener = document.querySelector(".opener");
 let addSlide=document.querySelector("#add-slide");
-let slideList=document.querySelector(".slides");
+let slideList=document.querySelectorAll(".slide");
+let slidePane = document.querySelector(".slides");
 let firstSlide=document.querySelector("img[slideIdx='0']")
+
 let mediaRecorder;
 let chunks = [];
 let recordState = false;
-let isSlidesOpen = true;
+let isSlidesOpen = false;
+let currentSlideIndex = 0;
 
 let slideArr=[];
 let filter = "";
@@ -23,48 +25,50 @@ let currZoom = 1;
 
 const openSlides = () => {
   slidePane.classList.toggle("grid-show");
-  opener.src = isSlidesOpen?"./close.png":"./hamburger.png";
   isSlidesOpen = !isSlidesOpen;
+  opener.src = isSlidesOpen?"./close.png":"./hamburger.png";
 }
 firstSlide.classList.add("active-slide");
 firstSlide.addEventListener("click", handleActiveSheet);
 
 opener.addEventListener('click',openSlides);
 
+const drawCurrentSlide = (e) => {
+  const currIndex = e.currentTarget.getAttribute("slideIdx");
+  const idx = Number(currIndex);
+  currentSlideIndex = idx;
+  const url = slideList[idx].src;
+  canvasBoard.getContext('2d').drawImage(url,0,0);
+}
 
 addSlide.addEventListener("click",function(){
+  if(!isSlidesOpen)  
+    opener.click();
   let sheetsArr = document.querySelectorAll(".slide");
-    let lastSheetElem = sheetsArr[sheetsArr.length - 1];
-    let idx = lastSheetElem.getAttribute("slideIdx");
-    idx = Number(idx);
-  let c = document.createElement("canvas");
-  c.width = canvasBoard.scrollWidth;
-  c.height = canvasBoard.scrollHeight;
-  let ctxx = c.getContext("2d");
+  let lastSheetElem = sheetsArr[sheetsArr.length - 1];
+  let idx = lastSheetElem.getAttribute("slideIdx");
+  idx = Number(idx);
 
-  ctxx.translate(c.width / 2, c.height / 2);
-  ctxx.scale(currZoom, currZoom);
-  ctxx.translate(-c.width / 2, -c.height / 2);
-  ctxx.drawImage(canvasBoard, 0, 0);
-
-  slideArr[idx]=c.toDataURL("image/png;base64");
-  lastSheetElem.src=slideArr[idx];
-    let NewSheet = document.createElement("IMG");
-    NewSheet.classList.add("slide");
-    // NewSheet.classList.add("active-slide")
-    NewSheet.setAttribute("slideIdx", idx + 1);
+  if(idx !== currentSlideIndex)
+    addImageToLastSlide(lastSheetElem,idx);
+  let NewSheet = document.createElement("img");
+  NewSheet.classList.add("slide");
+  NewSheet.setAttribute("slideIdx", idx + 1);
+  NewSheet.setAttribute("alt","icon");
+  currentSlideIndex = idx+1;
     NewSheet.setAttribute("src","./NewIcons/new-sheet.jpeg");
     // page add
-    slideList.appendChild(NewSheet);
+    console.log(slidePane)
+    slidePane.appendChild(NewSheet);
+
     sheetsArr.forEach(function (sheet) {
-      sheet.classList.remove("active-slide");
-  })
-  sheetsArr = document.querySelectorAll(".slide");
-  sheetsArr[sheetsArr.length - 1].classList.add("active-slide");
+    sheet.classList.remove("active-slide");
+    })
   
   ctx.clearRect(0, 0, board.width, board.height);
-  
-  NewSheet.addEventListener("click", handleActiveSheet);
+  NewSheet.classList.add("active-slide")
+  NewSheet.addEventListener("click",handleActiveSheet);
+  //lastSheetElem.addEventListener("click", handleActiveSheet);
 })
 function handleActiveSheet(e) {
   let MySheet = e.currentTarget;
@@ -72,17 +76,40 @@ function handleActiveSheet(e) {
   sheetsArr.forEach(function (sheet) {
       sheet.classList.remove("active-slide");
   })
-  if (!MySheet.classList[1]) {
+  if(!MySheet.classList[1])
       MySheet.classList.add("active-slide");
-  }
   //  index
   let sheetIdx = MySheet.getAttribute("slideIdx")
-  let url=slideArr[sheetIdx];
-  ctx.clearRect(0, 0, board.width, board.height);
-  ctx.drawImage(url, 0, 0);
 
+    addImageToLastSlide(sheetsArr[currentSlideIndex],currentSlideIndex);
+
+  sheetIdx = Number(sheetIdx);
+  currentSlideIndex = sheetIdx;
   
+  ctx.clearRect(0, 0, board.width, board.height);
+  if(slideArr.length >= 1){
+    var image = new Image();
+    image.src = slideArr[sheetIdx];
+    image.onload = () => {
+      ctx.drawImage(image, 0, 0);
+    }
+  }
+}
+
+const addImageToLastSlide = (element,index) => {
+  let c = document.createElement("canvas");
+  c.width = canvasBoard.scrollWidth;
+  c.height = canvasBoard.scrollHeight;
+  let ctxx = c.getContext("2d");
   
+  ctxx.translate(c.width / 2, c.height / 2);
+  ctxx.scale(currZoom, currZoom);
+  ctxx.translate(-c.width / 2, -c.height / 2);
+  ctxx.drawImage(canvasBoard, 0, 0);
+  
+  const url = c.toDataURL("image/png;base64");
+  slideArr[index]= url; 
+  element.src = url;
 }
 
 let captureBtn = document.querySelector("#click-picture");
