@@ -1,5 +1,6 @@
 let constraints = { video: true, audio: true };
 
+let timmingElem=document.querySelector("#timming");
 let canvasBoard = document.querySelector(".board");
 let videoPlayer = document.querySelector("video");
 let vidRecordBtn = document.querySelector("#record-video");
@@ -53,10 +54,12 @@ vidRecordBtn.addEventListener("click", function () {
     innerDiv.classList.add("recording-animation");
     currZoom = 1;
     videoPlayer.style.transform = `scale(${currZoom})`;
+    startCounting();
     mediaRecorder.start();
   } else {
     recordState = false;
     innerDiv.classList.remove("recording-animation");
+    stopCounting();
     mediaRecorder.stop();
   }
 });
@@ -117,4 +120,22 @@ function addFilterToScreen(filterColor) {
 function removeFilter() {
   let OnScreenfilter = document.querySelector(".on-screen-filter");
   if (OnScreenfilter) OnScreenfilter.remove();
+}
+
+function startCounting(){
+  timmingElem.classList.add("timming-active");
+  let timeCount=0;
+  clearObj=setInterval(function(){
+      let seconds=(timeCount%60)<10?`0${Number.parseInt(timeCount%60)}`:`${Number.parseInt(timeCount%60)}`;
+      let minutes=(timeCount/60)<10?`0${Number.parseInt(timeCount/60)}`:`${Number.parseInt(timeCount/60)}`;
+      let hours=(timeCount/3600)<10?`0${Number.parseInt(timeCount/3600)}`:`${Number.parseInt(timeCount/3600)}`;
+      timmingElem.innerText=`${hours}:${minutes}:${seconds}`;
+      timeCount++;
+
+  },1000);
+}
+function stopCounting(){
+  timmingElem.classList.remove("timming-active");
+  timmingElem.innerText="00:00:00";
+  clearInterval(clearObj);
 }
