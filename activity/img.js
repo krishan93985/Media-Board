@@ -14,19 +14,19 @@ function uploadFile() {
         textBox.appendChild(img);
     })
 }
-function downloadBoard() {
-    //  create an anchor
-    // e.preventDefault();
-    let a = document.createElement("a");
-    //  set filename to it's download attribute
-    a.download = "file.png";
-    //  convert board to url 
-    let url = board.toDataURL("image/png;base64");
-    //  set as href of anchor
-    a.href = url;
-    // click the anchor
-    a.click();
-    //  reload behaviour does not get triggerd
-    a.remove();
+// function downloadBoard() {
+//     //  create an anchor
+//     // e.preventDefault();
+//     let a = document.createElement("a");
+//     //  set filename to it's download attribute
+//     a.download = "file.png";
+//     //  convert board to url 
+//     let url = board.toDataURL("image/png;base64");
+//     //  set as href of anchor
+//     a.href = url;
+//     // click the anchor
+//     a.click();
+//     //  reload behaviour does not get triggerd
+//     a.remove();
 
-}
+// }

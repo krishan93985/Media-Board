@@ -37,9 +37,7 @@ function handleTool(tool) {
         undoLast();
     } else if (tool == "redo") {
         redoLast();
-    } else if (tool == "download") {
-        downloadBoard();
-    }
+    } 
 }
 function changeColor(color) {
     ctx.strokeStyle = color;
