@@ -6,12 +6,15 @@ let videoPlayer = document.querySelector("video");
 let vidRecordBtn = document.querySelector("#record-video");
 let slidePane = document.querySelector(".slides");
 let opener = document.querySelector(".opener");
-
+let addSlide=document.querySelector("#add-slide");
+let slideList=document.querySelector(".slides");
+let firstSlide=document.querySelector("img[slideIdx='0']")
 let mediaRecorder;
 let chunks = [];
 let recordState = false;
 let isSlidesOpen = true;
 
+let slideArr=[];
 let filter = "";
 
 let maxZoom = 3;
@@ -23,17 +26,63 @@ const openSlides = () => {
   opener.src = isSlidesOpen?"./close.png":"./hamburger.png";
   isSlidesOpen = !isSlidesOpen;
 }
+firstSlide.classList.add("active-slide");
+firstSlide.addEventListener("click", handleActiveSheet);
 
 opener.addEventListener('click',openSlides);
 
-let allFilters = document.querySelectorAll(".filter");
 
-for (let i = 0; i < allFilters.length; i++) {
-  allFilters[i].addEventListener("click", function (e) {
-    filter = e.currentTarget.style.backgroundColor;
-    removeFilter();
-    addFilterToScreen(filter);
-  });
+addSlide.addEventListener("click",function(){
+  let sheetsArr = document.querySelectorAll(".slide");
+    let lastSheetElem = sheetsArr[sheetsArr.length - 1];
+    let idx = lastSheetElem.getAttribute("slideIdx");
+    idx = Number(idx);
+  let c = document.createElement("canvas");
+  c.width = canvasBoard.scrollWidth;
+  c.height = canvasBoard.scrollHeight;
+  let ctxx = c.getContext("2d");
+
+  ctxx.translate(c.width / 2, c.height / 2);
+  ctxx.scale(currZoom, currZoom);
+  ctxx.translate(-c.width / 2, -c.height / 2);
+  ctxx.drawImage(canvasBoard, 0, 0);
+
+  slideArr[idx]=c.toDataURL("image/png;base64");
+  lastSheetElem.src=slideArr[idx];
+    let NewSheet = document.createElement("IMG");
+    NewSheet.classList.add("slide");
+    // NewSheet.classList.add("active-slide")
+    NewSheet.setAttribute("slideIdx", idx + 1);
+    NewSheet.setAttribute("src","./NewIcons/new-sheet.jpeg");
+    // page add
+    slideList.appendChild(NewSheet);
+    sheetsArr.forEach(function (sheet) {
+      sheet.classList.remove("active-slide");
+  })
+  sheetsArr = document.querySelectorAll(".slide");
+  sheetsArr[sheetsArr.length - 1].classList.add("active-slide");
+  
+  ctx.clearRect(0, 0, board.width, board.height);
+  
+  NewSheet.addEventListener("click", handleActiveSheet);
+})
+function handleActiveSheet(e) {
+  let MySheet = e.currentTarget;
+  let sheetsArr = document.querySelectorAll(".slide");
+  sheetsArr.forEach(function (sheet) {
+      sheet.classList.remove("active-slide");
+  })
+  if (!MySheet.classList[1]) {
+      MySheet.classList.add("active-slide");
+  }
+  //  index
+  let sheetIdx = MySheet.getAttribute("slideIdx")
+  let url=slideArr[sheetIdx];
+  ctx.clearRect(0, 0, board.width, board.height);
+  ctx.drawImage(url, 0, 0);
+
+  
+  
 }
 
 let captureBtn = document.querySelector("#click-picture");
@@ -77,11 +126,6 @@ mediaRecorder.ondataavailable = e => chunks.push(e.data);
 mediaRecorder.onstop = e => {
   const completeBlob = new Blob(chunks, { type: "video/mp4" });
   let url = URL.createObjectURL(completeBlob);
-  // let a=document.createElement("a");
-  // a.download="vid.mp4";
-  // a.href=url;
-  // a.click();
-  // a.remove();
   addMediaToGallery(completeBlob, "video");
 
 };

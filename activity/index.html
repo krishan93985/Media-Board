@@ -13,12 +13,12 @@
     <div class="app">
         <div class="tool-bar">
             <div class="hamburger">
-                <img alt="icon" src="./hamburger.png" class="opener"/>
+                <img alt="icon" src="./hamburger.png" class="opener" />
             </div>
             
             <div class="tool-panel">
             <div class="tool">
-                <img alt="icon" src="./NewIcons/Addpage.svg" class="tool-img"/>
+                <img alt="icon" src="./NewIcons/Addpage.svg" class="tool-img" id="add-slide"/>
             </div>
             <div class="tool">
                 <img src="./NewIcons/Black_Pencil.svg" alt="" class="tool-img" id="pencil"
@@ -56,9 +56,9 @@
             <div class="tool">
                 <img src="./NewIcons/Redo.svg" alt="" class="tool-img" id="redo" onclick="handleTool('redo')">
             </div>
-            <div class="tool">
+            <!-- <div class="tool">
                 <img src="./NewIcons/Download.svg" alt="" class="tool-img" id="redo" onclick="handleTool('download')">
-            </div>
+            </div> -->
             <div class="tool">
                 <abbr title="Record">
                     <button id="record-video" class="tool-img"><div id="record-div"></div></button>
@@ -79,7 +79,8 @@
         </div>
     </div>
     <div>
-        <div class="slides close-slides">
+        <div class="slides close-slides" >
+                <img src="./NewIcons/new-sheet.jpeg" class="slide" slideIdx="0"/>
         </div>
         <canvas class="board"></canvas>
     </div>
@@ -89,8 +90,7 @@
         <video autoplay ></video>
     </div>
           <!-- C5.1.A  -->
-    <script src="dbScript.js"></script>
-    <script src="script.js"></script>
+    
     <script>
             // C5.1.B
         let galleryBtn = document.querySelector("#gallery-button");
@@ -121,6 +121,8 @@
     <script src="img.js"></script>
     <script src="canvas.js"></script>
     <script src="reciever.js"></script>
+    <script src="dbScript.js"></script>
+    <script src="script.js"></script>
 </body>
 
 </html>
