@@ -54,6 +54,9 @@ align-items:center;
     height: 80%;
 }
 .tool-options{
+    position: absolute;
+    top: 75px;
+    left: 33vw;
     background: yellow;
     height: 6rem;
     width: 9rem;
@@ -169,6 +172,10 @@ align-items:center;
     bottom: 0px;
     right:0px;
     background-color: black;
+    display:none;
+  }
+  .video-on{
+    display:block;
   }
   
   .slides{
@@ -251,7 +258,7 @@ align-items:center;
   }
 
   .recording-animation {
-    animation: shrinkInOut 0.8s infinite;
+    animation: shrinkInOut 1.2s infinite;
   }
   
   .capture-animation {
@@ -264,7 +271,7 @@ align-items:center;
     }
   
     50% {
-      transform: scale(1.2);
+      transform: scale(1.1);
     }
   
     100% {
@@ -420,6 +427,10 @@ align-items:center;
       width:3.5rem;
       font-size: 0.7rem;
     }
+    .camera{
+      height:2.5rem;
+      width:3.5rem;
+    }
   }
 
   @media (max-width: 600px) {
@@ -480,6 +491,11 @@ align-items:center;
       width:2.5rem;
       font-size:0.5rem;
     }
+    .camera{
+      height:1.8rem;
+      width:2.5rem;
+      font-size:0.5rem;
+    }
     .video-container {
       height: 20vh;
       width: 30vw;
@@ -498,3 +514,5 @@ align-items:center;
 .timming-active{
   display: block;
 } 
+
+
