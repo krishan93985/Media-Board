@@ -46,6 +46,9 @@ align-items:center;
 height: 4rem;
 width:4rem;
 margin:0px 2px 0px 2px;
+display:flex;
+justify-content: center;
+align-items:center;
 }
 .tool-img{
     height: 80%;
@@ -99,6 +102,11 @@ margin:0px 2px 0px 2px;
     resize:both;
     overflow: auto;
 }
+
+#remove-slide{
+  cursor: url("./NewIcons/Removepage.png"), auto;
+}
+
 .nav-bar{
     
     height: 20%;
@@ -139,22 +147,19 @@ margin:0px 2px 0px 2px;
   }
   
   #record-video {
-    height: 3.5rem;
-    width: 3.5rem;
-    margin:0px 2px 0px 2px;
-    border-radius:50%;
-    border:5px solid white;
-    background-color: black;
+    width:80%;
+    height:80%;
+    cursor:pointer;
   }
   
-  #click-picture {
+  /* #click-picture {
     height: 3.5rem;
     width: 3.5rem;
     margin:0px 2px 0px 2px;
     border-radius:50%;
     border:5px solid white;
     background-color: black;
-  }
+  } */
   
   .video-container {
     height: 25vh;
@@ -189,6 +194,14 @@ margin:0px 2px 0px 2px;
     }
   }
 
+  /* .slide-options{
+    width:6rem;
+    height:5rem;
+    position: absolute;
+    background:rgba(238, 61, 61, 0.6);
+    display: block;
+  } */
+
   /* .slides div{
     display:flex;
     justify-content: center;
@@ -202,6 +215,7 @@ margin:0px 2px 0px 2px;
     margin-top:1rem;
     background-color: white;
   }
+
   .active-slide{
     border:5px solid rgb(245, 145, 145);
     border-style: ridge;
@@ -231,6 +245,11 @@ margin:0px 2px 0px 2px;
     background: white;
   }
   
+  #click-picture{
+    width:80%;
+    height:80%;
+  }
+
   .recording-animation {
     animation: shrinkInOut 0.8s infinite;
   }
@@ -272,16 +291,16 @@ margin:0px 2px 0px 2px;
     background-size: cover;
   }
   
-  #record-video,
+  /* #record-video,
   #click-picture,
   .filter-container {
     z-index: 3;
-  }
+  } */
 
-  #record-video,
+  /* #record-video,
   #click-picture{
     cursor:pointer;
-  }
+  } */
   
   .zoom {
     z-index: 3;
@@ -304,7 +323,7 @@ margin:0px 2px 0px 2px;
   }
   
   /* C5.2 */
-  #gallery-button {
+  /* #gallery-button {
     height: 3.5rem;
     z-index: 2;
     width: 4rem;
@@ -312,11 +331,10 @@ margin:0px 2px 0px 2px;
     margin:0px 2px 0px 2px;
     outline: none;
     border-radius: 5px;
-    background-color: #222;
     cursor:pointer;
     font-size: 1rem;
     color: white;
-  }
+  } */
   
   /* C6.2  */
   .gallery-delete-button,

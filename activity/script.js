@@ -6,9 +6,11 @@ let videoPlayer = document.querySelector("video");
 let vidRecordBtn = document.querySelector("#record-video");
 let opener = document.querySelector(".opener");
 let addSlide=document.querySelector("#add-slide");
+let onRemoveSlide = document.querySelector("#remove-slide");
 let slideList=document.querySelectorAll(".slide");
 let slidePane = document.querySelector(".slides");
-let firstSlide=document.querySelector("img[slideIdx='0']")
+let slidePaneContainer = document.querySelector(".slides-container");
+let firstSlide=slideList[0];
 
 let mediaRecorder;
 let chunks = [];
@@ -28,47 +30,81 @@ const openSlides = () => {
   isSlidesOpen = !isSlidesOpen;
   opener.src = isSlidesOpen?"./close.png":"./hamburger.png";
 }
+
 firstSlide.classList.add("active-slide");
 firstSlide.addEventListener("click", handleActiveSheet);
 
 opener.addEventListener('click',openSlides);
 
 const drawCurrentSlide = (e) => {
-  const currIndex = e.currentTarget.getAttribute("slideIdx");
+  const currentNode = Array.prototype.slice.call(slidePane.children);
+  const currIndex = currentNode.indexOf(e.currentTarget);
   const idx = Number(currIndex);
   currentSlideIndex = idx;
   const url = slideList[idx].src;
   canvasBoard.getContext('2d').drawImage(url,0,0);
 }
 
+const removeSlide = (e) => {
+  if(slideArr.length <= 1 ) return;
+  if(!isSlidesOpen) 
+    opener.click();
+  //remove current img src from array
+  slideArr.splice(currentSlideIndex,1);
+  const currentSlides = document.querySelectorAll(".slide");
+  
+  //remove current slide
+  slidePane.removeChild(currentSlides[currentSlideIndex]);
+  
+  currentSlideIndex = currentSlideIndex === slideArr.length?currentSlideIndex-1:currentSlideIndex;
+  
+  //clear canvas
+  ctx.clearRect(0, 0, board.width, board.height);
+  
+  //draw image to canvas
+    var image = new Image();
+    image.src = slideArr[currentSlideIndex];
+    image.onload = () => {
+      canvasBoard.getContext('2d').drawImage(image, 0, 0);
+    }
+  //set active slide color  
+  const slides = document.querySelectorAll(".slide");
+  slides[currentSlideIndex].classList.add("active-slide");
+}
+
+onRemoveSlide.addEventListener("click",removeSlide);
+
 addSlide.addEventListener("click",function(){
+  //simulate click event on slidePane
   if(!isSlidesOpen)  
     opener.click();
+  
+  //select all sheets and get currentSheetElement
   let sheetsArr = document.querySelectorAll(".slide");
-  let lastSheetElem = sheetsArr[sheetsArr.length - 1];
-  let idx = lastSheetElem.getAttribute("slideIdx");
-  idx = Number(idx);
-
-  if(idx !== currentSlideIndex)
-    addImageToLastSlide(lastSheetElem,idx);
+  let currentSheetElem = sheetsArr[currentSlideIndex];
+  
+  addImageToLastSlide(currentSheetElem,currentSlideIndex);
+  
+  //create a new sheet
   let NewSheet = document.createElement("img");
   NewSheet.classList.add("slide");
-  NewSheet.setAttribute("slideIdx", idx + 1);
   NewSheet.setAttribute("alt","icon");
-  currentSlideIndex = idx+1;
-    NewSheet.setAttribute("src","./NewIcons/new-sheet.jpeg");
-    // page add
-    console.log(slidePane)
+  NewSheet.setAttribute("src","./NewIcons/new-sheet.jpeg");
+  //insert new sheet after currentsheet
+  if(currentSlideIndex !== slideArr.length-1)
+    slidePane.insertBefore(NewSheet,currentSheetElem.nextSibling);
+  else 
     slidePane.appendChild(NewSheet);
-
-    sheetsArr.forEach(function (sheet) {
-    sheet.classList.remove("active-slide");
-    })
+  //remove active class from last slide
+  currentSheetElem.classList.remove("active-slide");
+  currentSlideIndex++;
   
+  //clear canvas and change active slide
   ctx.clearRect(0, 0, board.width, board.height);
-  NewSheet.classList.add("active-slide")
+  NewSheet.classList.add("active-slide");
   NewSheet.addEventListener("click",handleActiveSheet);
-  //lastSheetElem.addEventListener("click", handleActiveSheet);
+  slideArr.splice(currentSlideIndex,0,"./NewIcons/new-sheet.jpeg");
+
 })
 function handleActiveSheet(e) {
   let MySheet = e.currentTarget;
@@ -79,11 +115,11 @@ function handleActiveSheet(e) {
   if(!MySheet.classList[1])
       MySheet.classList.add("active-slide");
   //  index
-  let sheetIdx = MySheet.getAttribute("slideIdx")
-
-    addImageToLastSlide(sheetsArr[currentSlideIndex],currentSlideIndex);
-
-  sheetIdx = Number(sheetIdx);
+  addImageToLastSlide(sheetsArr[currentSlideIndex],currentSlideIndex);
+  
+  const currentNode = Array.prototype.slice.call(slidePane.children);
+  const currIndex = currentNode.indexOf(MySheet);
+  const sheetIdx = Number(currIndex);
   currentSlideIndex = sheetIdx;
   
   ctx.clearRect(0, 0, board.width, board.height);
@@ -113,9 +149,9 @@ const addImageToLastSlide = (element,index) => {
 }
 
 let captureBtn = document.querySelector("#click-picture");
-captureBtn.addEventListener("click", function () {
-  let innerDiv = captureBtn.querySelector("#click-div");
-  innerDiv.classList.add("capture-animation");
+captureBtn.addEventListener("click", function (e) {
+  //let innerDiv = captureBtn.querySelector("#click-div");
+  captureBtn.classList.add("capture-animation");
   capture(filter);
   setTimeout(function () {
     innerDiv.classList.remove("capture-animation");
@@ -124,17 +160,16 @@ captureBtn.addEventListener("click", function () {
 
 vidRecordBtn.addEventListener("click", function () {
   removeFilter();
-  let innerDiv = vidRecordBtn.querySelector("#record-div");
   if (!recordState) {
     recordState = true;
-    innerDiv.classList.add("recording-animation");
+    vidRecordBtn.classList.add("recording-animation");
     currZoom = 1;
     videoPlayer.style.transform = `scale(${currZoom})`;
     startCounting();
     mediaRecorder.start();
   } else {
     recordState = false;
-    innerDiv.classList.remove("recording-animation");
+    vidRecordBtn.classList.remove("recording-animation");
     stopCounting();
     mediaRecorder.stop();
   }
