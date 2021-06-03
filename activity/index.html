@@ -6,6 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Board</title>
     <link rel="stylesheet" href="style.css">
+    <script src=
+"https://cdn.jsdelivr.net/npm/html2canvas@1.0.0-rc.5/dist/html2canvas.min.js">
+  </script>
 </head>
 
 <body>
@@ -64,7 +67,7 @@
             </div> -->
             <div class="tool">
                 <abbr title="Record">
-                    <img src="./NewIcons/screen-recording.png" alt="icon" id="record-video"/>
+                    <img src="./NewIcons/screen-recording-off.png" alt="icon" id="record-video"/>
                 </abbr>
             </div>
             <div class="tool">
@@ -75,19 +78,25 @@
             <div class="tool">
                         <img src="./NewIcons/gallery.png" id="gallery-button" alt="icon" class="tool-img" style="cursor:pointer"/>
             </div>
+            <div class="tool">
+                <img src="./NewIcons/camera-off.png" class="tool-img camera camera-off"/>
+            </div>
         </div>
     </div>
     <div>
             <div class="slides close-slides" >
                 <img src="./NewIcons/new-sheet.jpeg" class="slide" alt="slide"/>
             </div>
-        <canvas class="board"></canvas>
+            <div class="complete-board">
+                <canvas class="board"></canvas>
+            </div>
     </div>
     </div>      
     <div class="timming" id="timming">00.00.00</div>
     <div class="video-container">
         <video autoplay ></video>
     </div>
+    
           <!-- C5.1.A  -->
     
     <script>
@@ -99,13 +108,14 @@
         });
 
         let board = document.querySelector(".board");
-        board.height = window.innerHeight;
-        board.width = window.innerWidth;
+        let completeBoard=document.querySelector(".complete-board");
+        completeBoard.offsetHeight=board.height = window.innerHeight;
+        completeBoard.offsetWidth=board.width = window.innerWidth;
         //2d , 3d ,Webgl
         let ctx = board.getContext("2d");
         window.addEventListener("resize", function () {
-            board.height = window.innerHeight;
-            board.width = window.innerWidth;
+            completeBoard.offsetHeight=board.height = window.innerHeight;
+            completeBoard.offsetWidth=board.width = window.innerWidth;
             // redraw=> redraw
         })
     </script>
