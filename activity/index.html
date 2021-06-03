@@ -21,14 +21,25 @@
             
             <div class="tool-panel">
             <div class="tool">
+                <img alt="icon" src="./NewIcons/pageup.png" class="tool-img" id="up-slide" style="cursor:pointer;"/>
+                <span>Slide Up</span>
+            </div>
+            <div class="tool">
+                <img alt="icon" src="./NewIcons/pagedown.png" class="tool-img" id="down-slide" style="cursor:pointer;"/>
+                <span>Slide Down</span>
+            </div>
+            <div class="tool">
                 <img alt="icon" src="./NewIcons/Addpage.png" class="tool-img" id="add-slide" style="cursor:cell;"/>
+                <span>New Slide</span>
             </div>
             <div class="tool">
-                <img alt="icon" src="./NewIcons/Removepage.png" class="tool-img" id="remove-slide"/>
+                <img alt="icon" src="./NewIcons/Removepage.png" class="tool-img" id="remove-slide" style="cursor:pointer;"/>
+                <span>Remove Slide</span>
             </div>
             <div class="tool">
-                <img src="./NewIcons/Black_Pencil.svg" alt="" class="tool-img" id="pencil"
+                <img src="./NewIcons/pencil.png" alt="" class="tool-img" id="pencil"
                     onclick="handleTool('pencil')">
+                    <span>Pen</span>
                 <div class="tool-options" id="pencil-options">
                     <div class="slider">
                         <input type="range" max='50' min='4' value='5' step='1'>
@@ -41,7 +52,8 @@
                 </div>
             </div>
             <div class="tool">
-                <img src="./NewIcons/Eraser.svg" alt="" class="tool-img" id="eraser" onclick="handleTool('eraser')">
+                <img src="./NewIcons/eraser.png" alt="" class="tool-img" id="eraser" onclick="handleTool('eraser')">
+                <span>Eraser</span>
                 <div class="tool-options" id="eraser-options">
                     <div class="slider">
                         <input type="range" name="" max='50' min='4' value='5' step='1'>
@@ -49,41 +61,46 @@
                 </div>
             </div>
             <div class="tool">
-                <img src="./NewIcons/StickyNote.svg" alt="" class="tool-img" id="sticky" onclick="handleTool('sticky')">
-
+                <img src="./NewIcons/sticky-notes.svg" alt="" class="tool-img" id="sticky" onclick="handleTool('sticky')">
+                <span>Sticky Note</span>
             </div>
             <div class="tool">
-                <img src="./NewIcons/Photo.svg" alt="" class="tool-img" id="upload" onclick="handleTool('upload')" style="cursor:pointer">
+                <img src="./NewIcons/image-upload.png" alt="" class="tool-img" id="upload" onclick="handleTool('upload')" style="cursor:pointer">
+                <span>Upload Image</span>
                 <input type="file" name="" id="acceptImg" style="display: none;">
             </div>
             <div class="tool">
-                <img src="./NewIcons/undo.svg" alt="" class="tool-img" id="undo" onclick="handleTool('undo')" style="cursor:alias"/>
+                <img src="./NewIcons/undo.png" alt="" class="tool-img" id="undo" onclick="handleTool('undo')" style="cursor:alias"/>
+                <span>Undo</span>
             </div>
             <div class="tool">
-                <img src="./NewIcons/Redo.svg" alt="" class="tool-img" id="redo" onclick="handleTool('redo')" style="cursor:alias"/>
+                <img src="./NewIcons/redo.png" alt="" class="tool-img" id="redo" onclick="handleTool('redo')" style="cursor:alias"/>
+                <span>Redo</span>
             </div>
             <div class="tool">
-                <img src="./NewIcons/Download.svg" alt="" class="tool-img" id="download-pdf" onclick="handleTool('download')">
+                <img src="./NewIcons/download.png" alt="" class="tool-img" id="download-pdf" onclick="handleTool('download')">
+                <span>Download as pdf</span>
             </div>
             <div class="tool">
-                <abbr title="Record">
-                    <img src="./NewIcons/screen-recording-off.png" alt="icon" id="record-video"/>
-                </abbr>
+                    <img src="./NewIcons/screen-recording-off.png" alt="icon" id="record-video" class="tool-img"/>
+                <span>Record</span>
             </div>
             <div class="tool">
-                <abbr title="Capture">
-                    <img src="./NewIcons/screenshot.png" alt="icon" id="click-picture" style="cursor:pointer"/>
-                </abbr>
+                    <img src="./NewIcons/screenshot.png" alt="icon" id="click-picture" style="cursor:pointer" class="tool-img"/>
+                <span>Screenshot</span>
             </div>
             <div class="tool">
                         <img src="./NewIcons/gallery.png" id="gallery-button" alt="icon" class="tool-img" style="cursor:pointer"/>
+                        <span>Gallery</span>
             </div>
             <div class="tool">
                 <img src="./NewIcons/camera-off.png" class="tool-img camera camera-off"/>
+                <span>Camera</span>
             </div>
         </div>
     </div>
     <div>
+        <span class="curr-slide-number"></span>
             <div class="slides close-slides" >
                 <img src="./NewIcons/new-sheet.jpeg" class="slide" alt="slide"/>
             </div>

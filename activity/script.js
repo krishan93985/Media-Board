@@ -11,6 +11,10 @@ let onRemoveSlide = document.querySelector("#remove-slide");
 let slideList = document.querySelectorAll(".slide");
 let slidePane = document.querySelector(".slides");
 let slidePaneContainer = document.querySelector(".slides-container");
+let upArrow = document.querySelector("#up-slide");
+let downArrow = document.querySelector("#down-slide");
+let currentSlideIndexContainer = document.querySelector(".curr-slide-number");
+
 let firstSlide = slideList[0];
 let camera = document.querySelector(".camera");
 let cameraOn = false;
@@ -43,10 +47,64 @@ window.addEventListener("keydown",(event) => {
   }
 })
 
+const fillCurrentSlideIndexContainer = () => {
+  const textNode = document.createTextNode(`${currentSlideIndex}`);
+  currentSlideIndexContainer.innerText = (`${currentSlideIndex+1}`);
+}
+
+const moveSlideUp = () => {
+  //only one slide present
+  if(!isSlidesOpen || currentSlideIndex === 0) return;
+  
+  const allSlides = document.querySelectorAll(".slide");
+  const currentSlide = allSlides[currentSlideIndex];
+  const prevSlide = allSlides[currentSlideIndex-1];
+  
+  
+  //swap slide properties
+  const swapElement1 = slideArr[currentSlideIndex-1];
+  slideArr.splice(currentSlideIndex-1,1);
+  slideArr.splice(currentSlideIndex,0,swapElement1);
+
+  //swap previous slide with current slide
+  slidePane.removeChild(currentSlide);
+  slidePane.insertBefore(currentSlide,prevSlide);
+  
+  currentSlideIndex--;
+
+  fillCurrentSlideIndexContainer();
+}
+
+const moveSlideDown = () => {
+  //do nothing when current slide is last slide
+  if(!isSlidesOpen || currentSlideIndex === slideArr.length-1) return;
+
+  const allSlides = document.querySelectorAll(".slide");
+  const currentSlide = allSlides[currentSlideIndex];
+  const nextSlide = allSlides[currentSlideIndex+1];
+
+  //swap slide properties
+  const swapElement1 = slideArr[currentSlideIndex];
+  slideArr.splice(currentSlideIndex,1);
+  slideArr.splice(currentSlideIndex+1,0,swapElement1);
+
+  //swap next slide with current slide
+  slidePane.removeChild(nextSlide);
+  slidePane.insertBefore(nextSlide,currentSlide);
+  
+  currentSlideIndex++;
+  fillCurrentSlideIndexContainer();
+}
+
+upArrow.addEventListener("click",moveSlideUp);
+downArrow.addEventListener("click",moveSlideDown);
+
 const openSlides = () => {
   slidePane.classList.toggle("grid-show");
+  currentSlideIndexContainer.classList.toggle("show-block");
   isSlidesOpen = !isSlidesOpen;
   opener.src = isSlidesOpen ? "./close.png" : "./hamburger.png";
+  fillCurrentSlideIndexContainer();
 }
 
 firstSlide.classList.add("active-slide");
@@ -88,6 +146,8 @@ const removeSlide = (e) => {
   //set active slide color  
   const slides = document.querySelectorAll(".slide");
   slides[currentSlideIndex].classList.add("active-slide");
+  
+  fillCurrentSlideIndexContainer();
 }
 
 onRemoveSlide.addEventListener("click", removeSlide);
@@ -122,7 +182,7 @@ addSlide.addEventListener("click", function () {
   NewSheet.classList.add("active-slide");
   NewSheet.addEventListener("click", handleActiveSheet);
   slideArr.splice(currentSlideIndex, 0, "./NewIcons/new-sheet.jpeg");
-
+  fillCurrentSlideIndexContainer();
 })
 function handleActiveSheet(e) {
   let MySheet = e.currentTarget;
@@ -148,6 +208,7 @@ function handleActiveSheet(e) {
       ctx.drawImage(image, 0, 0);
     }
   }
+  fillCurrentSlideIndexContainer();
 }
 
 const addImageToLastSlide = (element, index) => {
