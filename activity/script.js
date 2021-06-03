@@ -29,6 +29,20 @@ let maxZoom = 3;
 let minZoom = 1;
 let currZoom = 1;
 
+window.addEventListener("keydown",(event) => {
+  const allSlides = document.querySelectorAll(".slide");
+  if(event.code === "ArrowUp"){
+    if(currentSlideIndex === 0) return;
+    
+    allSlides[currentSlideIndex-1].click();
+  }
+  if(event.code === "ArrowDown"){
+    if(currentSlideIndex === allSlides.length-1) return;
+    
+    allSlides[currentSlideIndex+1].click();
+  }
+})
+
 const openSlides = () => {
   slidePane.classList.toggle("grid-show");
   isSlidesOpen = !isSlidesOpen;
