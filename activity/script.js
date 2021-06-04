@@ -25,7 +25,25 @@ let chunks = [];
 let isSlidesOpen = false;
 let currentSlideIndex = 0;
 
-let slideArr = [];
+//slideArr representation
+// slideArr = [
+//     {
+//       imageUrl:"",
+//       zoomedUrl:"",
+//       stickyPads:[stickyPad1,stickyPad2]
+//     }
+// ]
+// ADD PAGE
+// REMOVE PAGE
+
+const newSlideInfo = {
+  imageUrl:"./NewIcons/new-sheet.jpeg",
+  zoomedUrl:"./NewIcons/new-sheet.jpeg",
+  stickyPads:[]
+};
+
+let slideArr = [newSlideInfo];
+let filter = "";
 
 
 
@@ -44,8 +62,21 @@ window.addEventListener("keydown",(event) => {
 })
 
 const fillCurrentSlideIndexContainer = () => {
-  const textNode = document.createTextNode(`${currentSlideIndex}`);
+  // const textNode = document.createTextNode(`${currentSlideIndex}`);
   currentSlideIndexContainer.innerText = (`${currentSlideIndex+1}`);
+}
+
+const removeCurretStickyPads = () => {
+  const currentStickyPads = document.querySelectorAll(".stickyPad");
+  for(stickyPad of currentStickyPads){
+    document.body.removeChild(stickyPad);
+  }
+}
+
+const displayCurrentStickyPads = (index) => {
+  for(stickyPad of slideArr[index].stickyPads){
+    document.body.appendChild(stickyPad);
+  }
 }
 
 const moveSlideUp = () => {
@@ -55,7 +86,6 @@ const moveSlideUp = () => {
   const allSlides = document.querySelectorAll(".slide");
   const currentSlide = allSlides[currentSlideIndex];
   const prevSlide = allSlides[currentSlideIndex-1];
-  
   
   //swap slide properties
   const swapElement1 = slideArr[currentSlideIndex-1];
@@ -121,7 +151,8 @@ const removeSlide = (e) => {
   if (slideArr.length <= 1) return;
   if (!isSlidesOpen)
     opener.click();
-  //remove current img src from array
+
+  //remove current slide info from array
   slideArr.splice(currentSlideIndex, 1);
   const currentSlides = document.querySelectorAll(".slide");
 
@@ -133,12 +164,18 @@ const removeSlide = (e) => {
   //clear canvas
   ctx.clearRect(0, 0, board.width, board.height);
 
+  //remove current sticky pads from body
+  removeCurretStickyPads();
+
   //draw image to canvas
   var image = new Image();
-  image.src = slideArr[currentSlideIndex];
+  image.src = slideArr[currentSlideIndex].imageUrl;
   image.onload = () => {
     canvasBoard.getContext('2d').drawImage(image, 0, 0);
   }
+
+  displayCurrentStickyPads(currentSlideIndex);
+
   //set active slide color  
   const slides = document.querySelectorAll(".slide");
   slides[currentSlideIndex].classList.add("active-slide");
@@ -164,11 +201,13 @@ addSlide.addEventListener("click", function () {
   NewSheet.classList.add("slide");
   NewSheet.setAttribute("alt", "icon");
   NewSheet.setAttribute("src", "./NewIcons/new-sheet.jpeg");
+
   //insert new sheet after currentsheet
   if (currentSlideIndex !== slideArr.length - 1)
     slidePane.insertBefore(NewSheet, currentSheetElem.nextSibling);
   else
     slidePane.appendChild(NewSheet);
+  
   //remove active class from last slide
   currentSheetElem.classList.remove("active-slide");
   currentSlideIndex++;
@@ -177,9 +216,10 @@ addSlide.addEventListener("click", function () {
   ctx.clearRect(0, 0, board.width, board.height);
   NewSheet.classList.add("active-slide");
   NewSheet.addEventListener("click", handleActiveSheet);
-  slideArr.splice(currentSlideIndex, 0, "./NewIcons/new-sheet.jpeg");
+  slideArr.splice(currentSlideIndex, 0, newSlideInfo);
   fillCurrentSlideIndexContainer();
 })
+
 function handleActiveSheet(e) {
   let MySheet = e.currentTarget;
   let sheetsArr = document.querySelectorAll(".slide");
@@ -195,15 +235,22 @@ function handleActiveSheet(e) {
   const currIndex = currentNode.indexOf(MySheet);
   const sheetIdx = Number(currIndex);
   currentSlideIndex = sheetIdx;
-
+  
+  //clear canvas
   ctx.clearRect(0, 0, board.width, board.height);
+
+  //draw current slide image on canvas
   if (slideArr.length >= 1) {
     var image = new Image();
-    image.src = slideArr[sheetIdx];
+    image.src = slideArr[sheetIdx].imageUrl;
     image.onload = () => {
       ctx.drawImage(image, 0, 0);
     }
   }
+
+  //display sticky pads on canvas
+  displayCurrentStickyPads(sheetIdx);
+
   fillCurrentSlideIndexContainer();
 }
 
@@ -218,8 +265,22 @@ const addImageToLastSlide = (element, index) => {
   ctxx.drawImage(canvasBoard, 0, 0);
 
   const url = c.toDataURL("image/png;base64");
-  slideArr[index] = url;
-  element.src = url;
+  slideArr[index] = Object.assign({},slideArr[index],{imageUrl:url});
+  
+  //zoomedUrl to be added
+  
+  const currentStickyPads = document.querySelectorAll(".stickyPad");
+  
+  //store current sticky pads in slideArr
+  slideArr[index].stickyPads = currentStickyPads;
+  
+  //remove all sticky pads from body
+  for(stickyPad of currentStickyPads){
+    document.body.removeChild(stickyPad);
+  }
+
+  //change last slide image src
+  element.src = url; //src to be changed to zoomedUrl
 }
 
 let captureBtn = document.querySelector("#click-picture");
