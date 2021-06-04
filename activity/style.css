@@ -344,14 +344,7 @@ font-size: 0.9rem;
     right: 5.3vw;
   }
   
-  .zoom button {
-    color: white;
-    background-color: #222;
-    border: none;
-    outline: none;
-    height: 50%;
-    font-size: 3.5rem;
-  }
+  
   
   /* C5.2 */
   /* #gallery-button {
@@ -533,5 +526,9 @@ font-size: 0.9rem;
       width: 30vw;
     }
   } 
+  .audio-settings{
+    display:flex;
+    font-size: 0.7rem;
+  }
 
 

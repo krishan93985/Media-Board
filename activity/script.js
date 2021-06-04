@@ -4,7 +4,6 @@ let videoContainer = document.querySelector(".video-container")
 let timmingElem = document.querySelector("#timming");
 let canvasBoard = document.querySelector(".board");
 let videoPlayer = document.querySelector("video");
-let vidRecordBtn = document.querySelector("#record-video");
 let opener = document.querySelector(".opener");
 let addSlide = document.querySelector("#add-slide");
 let onRemoveSlide = document.querySelector("#remove-slide");
@@ -14,24 +13,21 @@ let slidePaneContainer = document.querySelector(".slides-container");
 let upArrow = document.querySelector("#up-slide");
 let downArrow = document.querySelector("#down-slide");
 let currentSlideIndexContainer = document.querySelector(".curr-slide-number");
+const warningEl = document.getElementById('warning');
+
 
 let firstSlide = slideList[0];
 let camera = document.querySelector(".camera");
 let cameraOn = false;
-let screenOn = false;
 
-let mediaRecorder;
+let mediaRecorder=[];
 let chunks = [];
-let recordState = false;
 let isSlidesOpen = false;
 let currentSlideIndex = 0;
 
 let slideArr = [];
-let filter = "";
 
-let maxZoom = 3;
-let minZoom = 1;
-let currZoom = 1;
+
 
 window.addEventListener("keydown",(event) => {
   const allSlides = document.querySelectorAll(".slide");
@@ -218,7 +214,6 @@ const addImageToLastSlide = (element, index) => {
   let ctxx = c.getContext("2d");
 
   ctxx.translate(c.width / 2, c.height / 2);
-  ctxx.scale(currZoom, currZoom);
   ctxx.translate(-c.width / 2, -c.height / 2);
   ctxx.drawImage(canvasBoard, 0, 0);
 
@@ -230,61 +225,17 @@ const addImageToLastSlide = (element, index) => {
 let captureBtn = document.querySelector("#click-picture");
 captureBtn.addEventListener("click", function (e) {
   captureBtn.classList.add("capture-animation");
-  capture(filter);
+  capture();
   setTimeout(function () {
     captureBtn.classList.remove("capture-animation");
   }, 1000);
-});
-
-vidRecordBtn.addEventListener("click", function () {
-  if (recordState == false) {
-    navigator.mediaDevices.getDisplayMedia(
-      {
-        video: { mediaSource: "screen" }
-      }).then(function (mediaStream) {
-        mediaRecorder = new MediaRecorder(mediaStream);
-
-        mediaRecorder.ondataavailable = e => chunks.push(e.data);
-        mediaRecorder.onstop = e => {
-          const completeBlob = new Blob(chunks, { type: "video/mp4" });
-          let url = URL.createObjectURL(completeBlob);
-          // let a=document.createElement("a");
-          // a.download="vid.mp4";
-          // a.href=url;
-          // a.click();
-          // a.remove();
-          addMediaToGallery(url, "video");
-        }
-        mediaStream.getVideoTracks()[0].onended = function () {
-          vidRecordBtn.src="./NewIcons/screen-recording-off.png";
-        recordState = false;
-        vidRecordBtn.classList.remove("recording-animation");
-        stopCounting();
-        mediaRecorder.stop();
-        };
-      }).catch(function (err) {
-        console.log(err);
-      })
-    startCounting();
-    vidRecordBtn.src = "./NewIcons/screen-recording.png";
-    recordState = true;
-    vidRecordBtn.classList.add("recording-animation");
-    currZoom = 1;
-    videoPlayer.style.transform = `scale(${currZoom})`;
-    mediaRecorder.start();
-  } else {
-    vidRecordBtn.src = "./NewIcons/screen-recording-off.png";
-    recordState = false;
-    vidRecordBtn.classList.remove("recording-animation");
-    stopCounting();
-    mediaRecorder.stop();
-  }
 });
 
 camera.addEventListener("click", function () {
   if (!cameraOn) {
     navigator.mediaDevices.getUserMedia(constraints).then(function (mediaStream) {
       videoPlayer.srcObject = mediaStream;
+      mediaRecorder.push(mediaStream);
     })
     camera.src = "./NewIcons/camera-on.png";
     videoContainer.classList.add("video-on");
@@ -295,6 +246,8 @@ camera.addEventListener("click", function () {
     const tracks = mediaStream2.getTracks();
 
     tracks[1].stop();
+    tracks[2].stop();
+
     camera.src = "./NewIcons/camera-off.png";
     videoContainer.classList.remove("video-on");
     cameraOn = !cameraOn;
@@ -302,7 +255,7 @@ camera.addEventListener("click", function () {
   }
 })
 
-function capture(filter) {
+function capture() {
   // let c = document.createElement("canvas");
   // c.width = canvasBoard.scrollWidth;
   // c.height = canvasBoard.scrollHeight;
@@ -312,10 +265,6 @@ function capture(filter) {
   // ctx.scale(currZoom, currZoom);
   // ctx.translate(-c.width / 2, -c.height / 2);
   // ctx.drawImage(canvasBoard, 0, 0);
-  // if (filter !== "") {
-  //   ctx.fillStyle = filter;
-  //   ctx.fillRect(0, 0, c.width, c.height);
-  // }
 
   // addMediaToGallery(c.toDataURL(), "img");
   html2canvas(completeBoard).then(
@@ -325,21 +274,6 @@ function capture(filter) {
   
 }
 
-function addFilterToScreen(filterColor) {
-  let filter = document.createElement("div");
-  filter.classList.add("on-screen-filter");
-  filter.style.height = "100vh";
-  filter.style.width = "100vw";
-  filter.style.position = "fixed";
-  filter.style.top = "0px";
-  filter.style.background = `${filterColor}`;
-  document.querySelector("body").appendChild(filter);
-}
-
-function removeFilter() {
-  let OnScreenfilter = document.querySelector(".on-screen-filter");
-  if (OnScreenfilter) OnScreenfilter.remove();
-}
 
 function startCounting() {
   timmingElem.classList.add("timming-active");
@@ -387,16 +321,3 @@ videoPlayer.addEventListener("mouseup", function (e) {
 videoPlayer.addEventListener("mouseleave", function (e) {
   isVidCtnDown = false
 })
-function takeshot() {
-
-  // Use the html2canvas
-  // function to take a screenshot
-  // and append it
-  // to the output div
-  html2canvas(completeBoard).then(
-      function (canvas) {
-          document
-          .getElementById('output')
-          .appendChild(canvas);
-      })
-}
