@@ -42,6 +42,65 @@ const newSlideInfo = {
 };
 
 let slideArr = [newSlideInfo];
+// local storage configuration
+// 1.add slide
+// 2.remove slide
+// 3.slide up
+// 4.slide down
+// 5.onclick slide
+// 6.window onload
+
+window.addEventListener("load",() => {
+  const storedSlideArr = window.localStorage.getItem("slideArr");
+  
+  if(storedSlideArr){
+  //update slideArr
+  slideArr = JSON.parse(storedSlideArr);
+  
+  //update currentSlideIndex
+  currentSlideIndex = JSON.parse(window.localStorage.getItem("currentSlideIndex"));
+
+  //append slides to slidepane
+  slideArr.forEach((slide,index) => {
+    
+    const slideElement = document.createElement("img");
+    slideElement.setAttribute("src",`${slide.imageUrl}`);
+    slideElement.setAttribute("alt","slide");
+    slideElement.setAttribute("class","slide");
+    slideElement.addEventListener("click",handleActiveSheet);
+
+    if(index === currentSlideIndex)
+      slideElement.classList.add("active-slide");
+    
+      slidePane.appendChild(slideElement);
+      console.log(slideElement);
+  })
+
+  //draw current slide image to canvas
+    var image = new Image();
+    image.src = slideArr[currentSlideIndex].imageUrl;
+    image.onload = () => {
+      ctx.drawImage(image, 0, 0);
+    }
+
+  displayCurrentStickyPads(currentSlideIndex);
+} else{
+    currentSlideIndex = 0;
+    slideArr = [newSlideInfo];
+
+    //append first image element
+    const slideElement = document.createElement("img");
+    slideElement.setAttribute("src",`${slideArr[0].imageUrl}`);
+    slideElement.setAttribute("alt","slide");
+    slideElement.setAttribute("class","slide");
+    slideElement.classList.add("active-slide");
+    slideElement.addEventListener("click", handleActiveSheet);
+    slidePane.appendChild(slideElement);
+    console.log(slidePane);
+}
+
+
+})
 
 window.addEventListener("keydown",(event) => {
   const allSlides = document.querySelectorAll(".slide");
@@ -114,12 +173,17 @@ const moveSlideUp = () => {
   slideArr.splice(currentSlideIndex-1,1);
   slideArr.splice(currentSlideIndex,0,swapElement1);
 
+  //update slideArr in localstorage
+  window.localStorage.setItem("slideArr",JSON.stringify(slideArr));
+
   //swap previous slide with current slide
   slidePane.removeChild(currentSlide);
   slidePane.insertBefore(currentSlide,prevSlide);
   
   currentSlideIndex--;
-
+  //update current slide index in localstorage
+  window.localStorage.setItem("currentSlideIndex",JSON.stringify(currentSlideIndex));
+  
   fillCurrentSlideIndexContainer();
 }
 
@@ -136,11 +200,18 @@ const moveSlideDown = () => {
   slideArr.splice(currentSlideIndex,1);
   slideArr.splice(currentSlideIndex+1,0,swapElement1);
 
+  //update slideArr in localstorage
+  window.localStorage.setItem("slideArr",JSON.stringify(slideArr));
+
   //swap next slide with current slide
   slidePane.removeChild(nextSlide);
   slidePane.insertBefore(nextSlide,currentSlide);
   
   currentSlideIndex++;
+  
+  //update current slide index in localstorage
+  window.localStorage.setItem("currentSlideIndex",JSON.stringify(currentSlideIndex));
+
   fillCurrentSlideIndexContainer();
 }
 
@@ -155,19 +226,16 @@ const openSlides = () => {
   fillCurrentSlideIndexContainer();
 }
 
-firstSlide.classList.add("active-slide");
-firstSlide.addEventListener("click", handleActiveSheet);
-
 opener.addEventListener('click', openSlides);
 
-const drawCurrentSlide = (e) => {
-  const currentNode = Array.prototype.slice.call(slidePane.children);
-  const currIndex = currentNode.indexOf(e.currentTarget);
-  const idx = Number(currIndex);
-  currentSlideIndex = idx;
-  const url = slideList[idx].src;
-  canvasBoard.getContext('2d').drawImage(url, 0, 0);
-}
+// const drawCurrentSlide = (e) => {
+//   const currentNode = Array.prototype.slice.call(slidePane.children);
+//   const currIndex = currentNode.indexOf(e.currentTarget);
+//   const idx = Number(currIndex);
+//   currentSlideIndex = idx;
+//   const url = slideList[idx].src;
+//   canvasBoard.getContext('2d').drawImage(url, 0, 0);
+// }
 
 const removeSlide = (e) => {
   if (slideArr.length <= 1) return;
@@ -176,6 +244,10 @@ const removeSlide = (e) => {
 
   //remove current slide info from array
   slideArr.splice(currentSlideIndex, 1);
+  
+  //update slideArr in localstorage
+  window.localStorage.setItem("slideArr",JSON.stringify(slideArr));
+
   const currentSlides = document.querySelectorAll(".slide");
 
   //remove current slide
@@ -183,6 +255,9 @@ const removeSlide = (e) => {
 
   currentSlideIndex = currentSlideIndex === slideArr.length ? currentSlideIndex - 1 : currentSlideIndex;
 
+  //update current slide index in localstorage
+  window.localStorage.setItem("currentSlideIndex",JSON.stringify(currentSlideIndex));
+  
   //clear canvas
   ctx.clearRect(0, 0, board.width, board.height);
 
@@ -239,6 +314,13 @@ addSlide.addEventListener("click", function () {
   NewSheet.classList.add("active-slide");
   NewSheet.addEventListener("click", handleActiveSheet);
   slideArr.splice(currentSlideIndex, 0, newSlideInfo);
+  
+  //add slideArr to localstorage
+  window.localStorage.setItem("slideArr",JSON.stringify(slideArr));
+
+  //add current slide index to localstorage
+  window.localStorage.setItem("currentSlideIndex",JSON.stringify(currentSlideIndex));
+
   fillCurrentSlideIndexContainer();
 })
 
@@ -258,6 +340,9 @@ function handleActiveSheet(e) {
   const sheetIdx = Number(currIndex);
   currentSlideIndex = sheetIdx;
   
+  //update current slide index in localstorage
+  window.localStorage.setItem("currentSlideIndex",JSON.stringify(currentSlideIndex));
+
   //clear canvas
   ctx.clearRect(0, 0, board.width, board.height);
 
@@ -292,10 +377,15 @@ const addImageToLastSlide = (element, index) => {
   
   //zoomedUrl to be added
   
-  const currentStickyPads = document.querySelectorAll(".stickyPad");
+  let currentStickyPads = document.querySelectorAll(".stickyPad");
   
   //store current sticky pads in slideArr
+  
   slideArr[index].stickyPads = currentStickyPads;
+  console.log(currentStickyPads)
+  
+  //update slideArr in localstorage
+  window.localStorage.setItem("slideArr",JSON.stringify(slideArr));
   
   //remove all sticky pads from body
   for(stickyPad of currentStickyPads){
