@@ -18,7 +18,7 @@ body {
     width:100%;
     height: 110px;
     display: grid;
-    grid-template-columns: 1fr 10fr;
+    grid-template-columns: 1fr 3fr 9fr;
     border-bottom: 2px solid rgb(0, 255, 255);
 }
 .hamburger{
@@ -77,6 +77,59 @@ font-size: 0.9rem;
     width: 9rem;
     display: none;
 }
+
+.nav-options-container{
+  justify-content: flex-start;
+  align-items: center;
+}
+
+
+.nav-options{
+  justify-content: space-evenly;
+  border-width:0px 2px;
+  border-style:dashed;
+  border-color:black;
+  margin:0;
+  height:95%;
+  width:28%;
+  cursor:pointer;
+}
+
+.mid-tool-style{
+  border-width:0px 0px;
+}
+.nav-options:hover{
+  background-color:rgb(235, 101, 130);
+}
+
+.nav-options-img{
+  height:50%;
+  width:50%;
+  cursor:pointer;
+}
+
+.hide{
+  display:none;
+}
+
+.show-flex{
+  display:flex;
+}
+
+.active-nav-option{
+  border-width:2px 2px;
+  border-color:white;
+  border-style: dashed;
+  background-color: rgb(235, 101, 130);
+}
+
+.curr-slide-number h5{
+  text-align: center;
+  width: 100%;
+  height: 100%;
+  margin:0px;
+}
+
 .slider{
     height: 38%;
     border: 1px solid;
@@ -98,8 +151,8 @@ font-size: 0.9rem;
 }
 .blue{
     background-color: blue;
-
 }
+
 .green{
     background-color: green;
 }
@@ -125,8 +178,7 @@ font-size: 0.9rem;
   cursor: url("./NewIcons/Removepage.png"), auto;
 }
 
-.nav-bar{
-    
+.nav-bar{    
     height: 20%;
     display: flex;
     justify-content: flex-end;
@@ -148,8 +200,8 @@ font-size: 0.9rem;
 }
 
 .textbox{
-    height: 80%;
-    width:100%;
+    height: 76%;
+    width:96%;
 }
 .textbox textarea{
     height: 100%;
@@ -207,12 +259,15 @@ font-size: 0.9rem;
     width:9%;
     background:black;
     height:2%;
+    border-style: groove;
+    border-width:0px 0px 2px 0px;
+    border-color:black;
     animation:smooth-slide-in 0.5s ease;
     transition: transform 0.5s ease;
     display:none;
     z-index:10;
     background:white;
-    opacity: 0.7;
+    opacity: 0.6;
     text-align: center;
   }
 
@@ -428,6 +483,16 @@ font-size: 0.9rem;
   
   /* C7  */
   @media (max-width: 1024px) {
+    .tool {
+      height:2.5rem;
+      width:2.6rem;
+      margin:0.7rem 0.8rem;
+   } 
+   .nav-options{
+     height:80%;
+     width:20%;
+     border:none;
+   }
     .filter-container {
       width: 12.5vw;
     }
@@ -444,6 +509,9 @@ font-size: 0.9rem;
       width:4rem;
       height:4rem;
     }
+    /* .nav-options-img{
+      height:40%;
+    } */
     /* 
   
     #record-video {
@@ -454,12 +522,28 @@ font-size: 0.9rem;
     } */
   }
   
-  @media (max-width: 800px) {
-    .tool {
-       height:2.5rem;
-       width:2.6rem;
-       margin:0.7rem 0.8rem;
-    }    
+  @media (max-width:900px){
+    .nav-options{
+      height:95%;
+      margin:0;
+      width:22%;
+    }
+    .nav-options-img{
+      height:28%;
+    }
+  }
+
+  @media (max-width: 800px) {   
+    .nav-options-container{
+      justify-content: center;
+    }
+    .tool{
+      margin:0.3rem 0.4rem;
+    }
+    .nav-options{
+      width:30%;
+      margin:0;
+    }
   }
 
   @media (max-width: 600px) {

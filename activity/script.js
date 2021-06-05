@@ -13,6 +13,14 @@ let slidePaneContainer = document.querySelector(".slides-container");
 let upArrow = document.querySelector("#up-slide");
 let downArrow = document.querySelector("#down-slide");
 let currentSlideIndexContainer = document.querySelector(".curr-slide-number");
+let slideNumber = document.querySelector(".number");
+let navOptionsContainer = document.querySelector(".nav-options-container");
+let navOptions = document.querySelectorAll(".nav-options");
+let toolPanel = document.querySelector(".tool-panel");
+let slideContols = document.querySelectorAll(".slide-control");
+let canvasTools = document.querySelectorAll(".canvas-tool");
+let MediaControls = document.querySelectorAll(".media-control");
+let allToolNodes = document.querySelectorAll(".only-tool");
 const warningEl = document.getElementById('warning');
 
 
@@ -24,6 +32,8 @@ let mediaRecorder=[];
 let chunks = [];
 let isSlidesOpen = false;
 let currentSlideIndex = 0;
+let lastToolboxIndex = -1;
+let allNavTools = [slideContols,canvasTools,MediaControls];
 
 //slideArr representation
 // slideArr = [
@@ -61,9 +71,35 @@ window.addEventListener("keydown",(event) => {
   }
 })
 
+for(var index=0;index < navOptions.length;index++){
+  navOptions[index].addEventListener("click",(event) => {
+    //remove active tool marker
+    const toolIdx = Array.prototype.slice.call(navOptionsContainer.children).indexOf(event.currentTarget);
+    for(element of navOptions){
+        element.classList.remove("active-nav-option");
+    }
+
+    //add active tool marker
+    event.currentTarget.classList.add("active-nav-option");
+    
+    //hide last nav tools
+    if(lastToolboxIndex != -1){
+      for(navTool of allNavTools[lastToolboxIndex]){
+          navTool.classList.remove("show-flex");
+      }
+    }
+
+    //show current nav tools
+    for(navTool of allNavTools[toolIdx]){
+      navTool.classList.add("show-flex");
+    }
+
+    lastToolboxIndex = toolIdx;
+  })
+}
+
 const fillCurrentSlideIndexContainer = () => {
-  // const textNode = document.createTextNode(`${currentSlideIndex}`);
-  currentSlideIndexContainer.innerText = (`${currentSlideIndex+1}`);
+  slideNumber.innerText = (`Slide : ${currentSlideIndex+1}`);
 }
 
 const removeCurretStickyPads = () => {
@@ -265,6 +301,7 @@ const addImageToLastSlide = (element, index) => {
   ctxx.drawImage(canvasBoard, 0, 0);
 
   const url = c.toDataURL("image/png;base64");
+  console.log(slideArr)
   slideArr[index] = Object.assign({},slideArr[index],{imageUrl:url});
   
   //zoomedUrl to be added
@@ -317,17 +354,6 @@ camera.addEventListener("click", function () {
 })
 
 function capture() {
-  // let c = document.createElement("canvas");
-  // c.width = canvasBoard.scrollWidth;
-  // c.height = canvasBoard.scrollHeight;
-  // let ctx = c.getContext("2d");
-
-  // ctx.translate(c.width / 2, c.height / 2);
-  // ctx.scale(currZoom, currZoom);
-  // ctx.translate(-c.width / 2, -c.height / 2);
-  // ctx.drawImage(canvasBoard, 0, 0);
-
-  // addMediaToGallery(c.toDataURL(), "img");
   html2canvas(completeBoard).then(
     function (canvas) {
       addMediaToGallery(canvas.toDataURL(), "img");

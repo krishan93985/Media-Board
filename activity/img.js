@@ -1,18 +1,20 @@
 let imgInput = document.querySelector("#acceptImg");
+imgInput.addEventListener("change", function () {
+    let imgObj = imgInput.files[0];
+    // console.log(imgObj);
+    // img => link 
+    let imgLink = URL.createObjectURL(imgObj);
+    let textBox = createBox();
+    let img = document.createElement("img");
+    img.setAttribute("class", "upload-img")
+    img.src = imgLink;
+    textBox.appendChild(img);
+    imgInput.value="";
+})
+
 function uploadFile() {
     // dialog box
     imgInput.click();
-    imgInput.addEventListener("change", function () {
-        let imgObj = imgInput.files[0];
-        // console.log(imgObj);
-        // img => link 
-        let imgLink = URL.createObjectURL(imgObj);
-        let textBox = createBox();
-        let img = document.createElement("img");
-        img.setAttribute("class", "upload-img")
-        img.src = imgLink;
-        textBox.appendChild(img);
-    })
 }
 // function downloadBoard() {
 //     //  create an anchor
