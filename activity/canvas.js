@@ -3,6 +3,10 @@
 let isPenDown = false;
 let undoArr = [];
 let redoArr = [];
+for(let i=0;i<100;i++){
+    undoArr[i]=[];
+    redoArr[i]=[];
+}
 board.addEventListener("mousedown", function (e) {
     // begin path
 
@@ -23,7 +27,7 @@ board.addEventListener("mousedown", function (e) {
         color: ctx.strokeStyle,
         width: ctx.lineWidth
     }
-    undoArr.push(mdp);
+    undoArr[currentSlideIndex].push(mdp);
     //  point => realtime draw
     socket.emit("md", mdp);
 })
@@ -47,7 +51,7 @@ board.addEventListener("mousemove", function (e) {
             color: ctx.strokeStyle,
             width: ctx.lineWidth
         }
-        undoArr.push(mmp);
+        undoArr[currentSlideIndex].push(mmp);
         socket.emit("mm", mmp);
     }
 })
@@ -63,22 +67,22 @@ function getLocation() {
 }
 function undoLast() {
     //  pop the last point
-    if (undoArr.length >= 2) {
+    if (undoArr[currentSlideIndex].length >= 2) {
         //  lines 
-        console.log(undoArr);
+        console.log(undoArr[currentSlideIndex]);
         let tempArr = []
-        for (let i = undoArr.length - 1; i >= 0; i--) {
+        for (let i = undoArr[currentSlideIndex].length - 1; i >= 0; i--) {
             console.log(undoArr[i]);
-            let id = undoArr[i].id;
+            let id = undoArr[currentSlideIndex][i].id;
             if (id == "md") {
-                tempArr.unshift(undoArr.pop());
+                tempArr.unshift(undoArr[currentSlideIndex].pop());
                 break;
             } else {
                 // undoArr.pop();
-                tempArr.unshift(undoArr.pop());
+                tempArr.unshift(undoArr[currentSlideIndex].pop());
             }
         }
-        redoArr.push(tempArr);
+        redoArr[currentSlideIndex].push(tempArr);
         //  clear canvas=> 
         ctx.clearRect(0, 0, board.width, board.height);
         // redraw
@@ -86,11 +90,11 @@ function undoLast() {
     }
 }
 function redoLast() {
-    if (redoArr.length > 0) {
+    if (redoArr[currentSlideIndex].length > 0) {
         //  lines 
-        let undoPath = redoArr.pop();
+        let undoPath = redoArr[currentSlideIndex].pop();
         for (let i = 0; i < undoPath.length; i++) {
-            undoArr.push(undoPath[i]);
+            undoArr[currentSlideIndex].push(undoPath[i]);
         }
         //  clear canvas=> 
         ctx.clearRect(0, 0, board.width, board.height);
@@ -99,8 +103,8 @@ function redoLast() {
     }
 }
 function redraw() {
-    for (let i = 0; i < undoArr.length; i++) {
-        let { x, y, id, color, width } = undoArr[i];
+    for (let i = 0; i < undoArr[currentSlideIndex].length; i++) {
+        let { x, y, id, color, width } = undoArr[currentSlideIndex][i];
         ctx.strokeStyle = color;
         ctx.lineWidth = width;
         if (id == "md") {

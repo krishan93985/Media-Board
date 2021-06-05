@@ -66,12 +66,12 @@ window.onload = () => {
             rec = new MediaRecorder(stream, { mimeType: 'video/webm; codecs=vp8,opus' });
             rec.ondataavailable = (e) => blobs.push(e.data);
             rec.onstop = async () => {
-
                 //blobs.push(MediaRecorder.requestData());
-                blob = new Blob(blobs, { type: 'video/webm' });
-                let url = URL.createObjectURL(blob);
-                addMediaToGallery(url, "video");
-
+                blob = new Blob(blobs, { type: 'video/mp4' });
+                //let url = URL.createObjectURL(blob);
+                if(db){
+                    addMediaToGallery(blob, "video");
+                }
             };
             vidRecordBtn.disabled = true;
             audioToggle.disabled = true;

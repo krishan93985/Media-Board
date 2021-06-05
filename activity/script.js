@@ -35,17 +35,6 @@ let currentSlideIndex = 0;
 let lastToolboxIndex = -1;
 let allNavTools = [slideContols,canvasTools,MediaControls];
 
-//slideArr representation
-// slideArr = [
-//     {
-//       imageUrl:"",
-//       zoomedUrl:"",
-//       stickyPads:[stickyPad1,stickyPad2]
-//     }
-// ]
-// ADD PAGE
-// REMOVE PAGE
-
 const newSlideInfo = {
   imageUrl:"./NewIcons/new-sheet.jpeg",
   zoomedUrl:"./NewIcons/new-sheet.jpeg",
@@ -53,9 +42,6 @@ const newSlideInfo = {
 };
 
 let slideArr = [newSlideInfo];
-let filter = "";
-
-
 
 window.addEventListener("keydown",(event) => {
   const allSlides = document.querySelectorAll(".slide");
@@ -354,11 +340,17 @@ camera.addEventListener("click", function () {
 })
 
 function capture() {
-  html2canvas(completeBoard).then(
-    function (canvas) {
-      addMediaToGallery(canvas.toDataURL(), "img");
-    })
-  
+    let canvas=document.createElement("canvas");
+    canvas.width=document.body.offsetWidth;
+    canvas.height=document.body.offsetHeight;
+    let tool=canvas.getContext("2d");
+    html2canvas(document.body).then(
+      function (canvas) {
+        tool.drawImage(canvas,10, 10, 
+          300, 175, 110, 310, 100, 175);
+    let link=canvas.toDataURL();
+    addMediaToGallery(link,"img");
+      })
 }
 
 
