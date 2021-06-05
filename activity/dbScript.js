@@ -51,7 +51,8 @@ function viewMedia() {
         video.autoplay = true;
         video.controls = true;
         video.loop = true;
-        video.src =URL.createObjectURL(cursor.value.media);
+        // video.srcObject = cursor.value.media;
+        video.src = window.URL.createObjectURL(cursor.value.media);
         body.appendChild(vidContainer);
       } else {
         let imgContainer = document.createElement("div");
