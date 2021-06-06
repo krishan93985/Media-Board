@@ -4,11 +4,15 @@ imgInput.addEventListener("change", function () {
     // console.log(imgObj);
     // img => link 
     let imgLink = URL.createObjectURL(imgObj);
-    let textBox = createBox();
+    let textBox = createBox("");
     let img = document.createElement("img");
-    img.setAttribute("class", "upload-img")
-    img.src = imgLink;
-    textBox.appendChild(img);
+    let tempImg = document.createElement("img");
+    img.setAttribute("class", "upload-img");
+    tempImg.src = imgLink;
+    tempImg.addEventListener("load",() => {
+        img.src = getBase64Url(tempImg);
+        textBox.appendChild(img);
+    })
     imgInput.value="";
 })
 

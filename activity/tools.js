@@ -30,7 +30,7 @@ function handleTool(tool) {
             pencilOptions.classList.remove("show");
         }
     } else if (tool == "sticky") {
-        createSticky();
+        createSticky("");
     } else if (tool == "upload") {
         uploadFile();
     } else if (tool == "undo") {

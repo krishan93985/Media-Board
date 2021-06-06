@@ -1,3 +1,4 @@
+
 let constraints = { video: true, audio: true };
 
 let videoContainer = document.querySelector(".video-container")
@@ -38,7 +39,8 @@ let allNavTools = [slideContols,canvasTools,MediaControls];
 const newSlideInfo = {
   imageUrl:"./NewIcons/new-sheet.jpeg",
   zoomedUrl:"./NewIcons/new-sheet.jpeg",
-  stickyPads:[]
+  stickyPads:[],
+  padsContent:[]
 };
 
 let slideArr = [newSlideInfo];
@@ -78,6 +80,7 @@ window.addEventListener("load",() => {
 
   //draw current slide image to canvas
     var image = new Image();
+    console.log(slideArr[currentSlideIndex].imageUrl)
     image.src = slideArr[currentSlideIndex].imageUrl;
     image.onload = () => {
       ctx.drawImage(image, 0, 0);
@@ -154,10 +157,79 @@ const removeCurretStickyPads = () => {
   }
 }
 
+const addStickyPadFunctionality = (stickyNode) => {
+  let stickyPad = stickyNode;
+  let navBar = stickyPad.childNodes[0];
+  let minimize = navBar.childNodes[0];
+  let close = navBar.childNodes[1];
+  let textbox = stickyPad.childNodes[1];
+
+  close.addEventListener("click", () => {
+    stickyPad.remove();
+});
+
+let isOpen = true
+// minimize=> 
+minimize.addEventListener("click", function () {
+    if (isOpen) {
+        textbox.style.display = "none";
+    } else {
+        textbox.style.display = "block";
+    }
+    isOpen = !isOpen;
+})
+//  move => draw
+let initialX = null;
+let initialY = null;
+let isStickyDown = false;
+navBar.addEventListener("mousedown", function (e) {
+    initialX = e.clientX;
+    initialY = e.clientY;
+    isStickyDown = true
+})
+navBar.addEventListener("mousemove", function (e) {
+    if (isStickyDown == true) {
+        let finalX = e.clientX;
+        let finalY = e.clientY;
+        let dX = finalX - initialX;
+        let dY = finalY - initialY;
+        //  
+        let { top, left } = stickyPad.getBoundingClientRect();
+        stickyPad.style.top = top + dY + "px";
+        stickyPad.style.left = left + dX + "px";
+        initialX = finalX;
+        initialY = finalY;
+    }
+ })
+//  navBar => mouse pointer up 
+navBar.addEventListener("mouseup", function (e) {
+    isStickyDown = false
+})
+//  
+navBar.addEventListener("mouseleave", function (e) {
+    isStickyDown = false
+}) 
+  console.log(stickyPad)
+  return textbox;
+}
+
 const displayCurrentStickyPads = (index) => {
-  for(stickyPad of slideArr[index].stickyPads){
-    document.body.appendChild(stickyPad);
-  }
+  slideArr[index].stickyPads.forEach((stickyPad,i) => {
+    var parser = new DOMParser();
+    var doc = parser.parseFromString(stickyPad, 'text/html');
+    let stickyNode = doc.body.childNodes[0];
+    let node = doc.body.childNodes[0].childNodes[1].childNodes[0];
+    console.log(stickyNode)
+    let textbox = addStickyPadFunctionality(stickyNode);
+    if(node.nodeName === "TEXTAREA"){
+        if(slideArr[index].padsContent[i] !== "" && slideArr[index].padsContent[i])
+          textbox.childNodes[0].value =  slideArr[index].padsContent[i];
+    } 
+    else{
+       node.src = slideArr[index].padsContent[i];
+    }
+    document.body.appendChild(doc.body.childNodes[0]);
+  })
 }
 
 const moveSlideUp = () => {
@@ -380,9 +452,24 @@ const addImageToLastSlide = (element, index) => {
   let currentStickyPads = document.querySelectorAll(".stickyPad");
   
   //store current sticky pads in slideArr
+  let stickyPadsArray = Array.prototype.slice.call(currentStickyPads);
+  stickyPadsArray = stickyPadsArray.map(element => element.outerHTML)
+  slideArr[index].stickyPads = stickyPadsArray;
+  console.log(stickyPadsArray)
   
-  slideArr[index].stickyPads = currentStickyPads;
-  console.log(currentStickyPads)
+  //store sticky pads content in slideArr
+  let tempPadsContent = [];
+  currentStickyPads.forEach((element,i) => {
+    let node = element.childNodes[1].childNodes[0];
+    if(node.nodeName === "TEXTAREA")
+      tempPadsContent[i] = (node.value); //stickypad is a textarea
+    else {
+      tempPadsContent[i] = (node.src); //stickypad is an image
+    }
+  })
+  slideArr[index].padsContent = tempPadsContent;
+
+  console.log(slideArr[index].padsContent)
   
   //update slideArr in localstorage
   window.localStorage.setItem("slideArr",JSON.stringify(slideArr));

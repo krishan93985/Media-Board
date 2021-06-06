@@ -1,4 +1,4 @@
-function createSticky() {
+function createSticky(value) {
     // <div class="stickyPad">
     //     <div class="nav-bar">
     //         <div class="close"></div>
@@ -10,5 +10,7 @@ function createSticky() {
     // create 
     let textBox = createBox();
     let textarea = document.createElement("textarea");
+    if(value !== "")
+        textarea.value = value;
     textBox.appendChild(textarea);
 }

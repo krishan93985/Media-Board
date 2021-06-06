@@ -1,3 +1,16 @@
+  const getBase64Url = (img,imgObj) => {
+    // Create canvas
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+    // Set width and height
+    canvas.width = img.width;
+    canvas.height = img.height;
+    console.log(img)
+    // Draw the image
+    ctx.drawImage(img, 0, 0);
+    return canvas.toDataURL();
+  }
+
 function createBox() {
     let stickyPad = document.createElement("div");
     let navBar = document.createElement("div");
@@ -18,9 +31,10 @@ function createBox() {
     // add subtree to page
     document.body.appendChild(stickyPad);
     // close=> remove 
-    close.addEventListener("click", function () {
+    close.addEventListener("click", () => {
         stickyPad.remove();
-    })
+    });
+
     let isOpen = true
     // minimize=> 
     minimize.addEventListener("click", function () {
