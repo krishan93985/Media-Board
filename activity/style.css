@@ -8,6 +8,9 @@ body {
   height:100%;
   font-family: 'Padauk', sans-serif;
 }
+*{
+  box-sizing: border-box;
+}
 .app{
   display:flex; 
   flex-direction:column;
@@ -86,20 +89,21 @@ font-size: 0.9rem;
 
 .nav-options{
   justify-content: space-evenly;
-  border-width:0px 2px;
-  border-style:dashed;
-  border-color:black;
+  /* border-width:0px 2px; */
+  /* border-style:dashed; */
+  /* border-color:black; */
   margin:0;
   height:95%;
   width:28%;
   cursor:pointer;
+  border:2px solid black;
 }
 
 .mid-tool-style{
-  border-width:0px 0px;
+  border-width:2px 0px;
 }
 .nav-options:hover{
-  background-color:rgb(235, 101, 130);
+  background-color:rgb(48, 47, 47);
 }
 
 .nav-options-img{
@@ -119,8 +123,8 @@ font-size: 0.9rem;
 .active-nav-option{
   border-width:2px 2px;
   border-color:white;
-  border-style: dashed;
-  background-color: rgb(235, 101, 130);
+  /* border-style: dashed; */
+  background-color: rgb(48, 47, 47);
 }
 
 .curr-slide-number h5{
@@ -442,6 +446,7 @@ font-size: 0.9rem;
     height: 25rem;
     padding: 2rem;
     margin: 2rem;
+    border-radius: 10px;
   }
   
   /* C6.6  */
@@ -454,17 +459,19 @@ font-size: 0.9rem;
     border-radius: 50%;
     border: none;
     background: black;
+    cursor:pointer;
+
     color: white;
     font-size: 1.5rem;
   }
   
   /* C6.7 */
   .gallery-delete-button {
-    background: #d91d1d;
+    background: rgb(243, 96, 96);
   }
   
   .gallery-download-button {
-    background: #291e1e;
+    background: #046e39;
   }
 
   .timming{

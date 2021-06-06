@@ -1,4 +1,3 @@
-
 let constraints = { video: true, audio: true };
 
 let videoContainer = document.querySelector(".video-container")
@@ -23,7 +22,8 @@ let canvasTools = document.querySelectorAll(".canvas-tool");
 let MediaControls = document.querySelectorAll(".media-control");
 let allToolNodes = document.querySelectorAll(".only-tool");
 const warningEl = document.getElementById('warning');
-
+let saveSlide=document.querySelector("#save-slide");
+// console.log(toolPanel.clientHeight);
 
 let firstSlide = slideList[0];
 let camera = document.querySelector(".camera");
@@ -66,7 +66,7 @@ window.addEventListener("load",() => {
   slideArr.forEach((slide,index) => {
     
     const slideElement = document.createElement("img");
-    slideElement.setAttribute("src",`${slide.imageUrl}`);
+    slideElement.setAttribute("src",`${slide.zoomedUrl}`);
     slideElement.setAttribute("alt","slide");
     slideElement.setAttribute("class","slide");
     slideElement.addEventListener("click",handleActiveSheet);
@@ -448,7 +448,20 @@ const addImageToLastSlide = (element, index) => {
   slideArr[index] = Object.assign({},slideArr[index],{imageUrl:url});
   
   //zoomedUrl to be added
-  
+  let canvas=document.createElement("canvas");
+    canvas.width=document.body.offsetWidth;
+    canvas.height=document.body.offsetHeight;
+    let tool=canvas.getContext("2d");
+    html2canvas(document.body).then(
+      function (canvas) {
+        tool.drawImage(canvas,0, 
+          toolPanel.clientHeight, canvasBoard.scrollWidth,canvasBoard.scrollHeight ,0,toolPanel.clientHeight,canvasBoard.scrollWidth, canvasBoard.scrollHeight);
+    let link=canvas.toDataURL();
+    slideArr[index] = Object.assign({},slideArr[index],{zoomedUrl:link});
+    element.src = link;
+  })
+
+
   let currentStickyPads = document.querySelectorAll(".stickyPad");
   
   //store current sticky pads in slideArr
@@ -482,6 +495,12 @@ const addImageToLastSlide = (element, index) => {
   //change last slide image src
   element.src = url; //src to be changed to zoomedUrl
 }
+saveSlide.addEventListener("click",function(){
+  let sheetsArr = document.querySelectorAll(".slide");
+  let currentSheetElem = sheetsArr[currentSlideIndex];
+
+  addImageToLastSlide(currentSheetElem, currentSlideIndex);
+})
 
 let captureBtn = document.querySelector("#click-picture");
 captureBtn.addEventListener("click", function (e) {
@@ -516,6 +535,7 @@ camera.addEventListener("click", function () {
   }
 })
 
+
 function capture() {
     let canvas=document.createElement("canvas");
     canvas.width=document.body.offsetWidth;
@@ -523,8 +543,8 @@ function capture() {
     let tool=canvas.getContext("2d");
     html2canvas(document.body).then(
       function (canvas) {
-        tool.drawImage(canvas,10, 10, 
-          300, 175, 110, 310, 100, 175);
+        tool.drawImage(canvas,0, 
+          toolPanel.clientHeight, canvasBoard.scrollWidth,canvasBoard.scrollHeight ,0,toolPanel.clientHeight,canvasBoard.scrollWidth, canvasBoard.scrollHeight);
     let link=canvas.toDataURL();
     addMediaToGallery(link,"img");
       })
