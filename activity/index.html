@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Board</title>
+    <title>Media-Board</title>
     <link rel="shortcut icon" href="#">
     <link rel="stylesheet" href="style.css">
     <script src=
@@ -25,31 +25,36 @@
                     <span>Slide Controls</span>
                 </div>
                 <div class="tool nav-options mid-tool-style">
-                    <img alt="icon" src="./NewIcons/drawing-tools.svg" class="nav-options-img" id="" style="cursor:pointer;"/>
-                    <span>Tools</span>
+                    <img alt="icon" src="./NewIcons/drawing-tools.png" class="nav-options-img" id="" style="cursor:pointer;"/>
+                    <span>Canvas Tools</span>
                 </div>
                 <div class="tool nav-options">
-                    <img alt="icon" src="./NewIcons/media-tools.svg" class="nav-options-img" id="" style="cursor:pointer;"/>
+                    <img alt="icon" src="./NewIcons/media-tools.png" class="nav-options-img" id="" style="cursor:pointer;"/>
                     <span>Media</span>
                 </div>
             </div>
             <div class="tool-panel">
+                <div class="tool only-tool slide-control hide">
+                    <img alt="icon" src="./NewIcons/Addpage.png" class="tool-img" id="add-slide" style="cursor:cell;"/>
+                    <span>New Slide</span>
+                </div>
+                <div class="tool only-tool slide-control hide">
+                    <img alt="icon" src="./NewIcons/Removepage.png" class="tool-img" id="remove-slide" style="cursor:pointer;"/>
+                    <span>Remove Slide</span>
+                </div>
+                <div class="tool only-tool slide-control hide">
+                    <img alt="icon" src="./NewIcons/save-slide.png" class="tool-img" id="save-slide" style="cursor:pointer;"/>
+                    <span>Save Slide</span>
+                </div>
             <div class="tool only-tool slide-control hide">
-                <img alt="icon" src="./NewIcons/pageup.svg" class="tool-img" id="up-slide" style="cursor:pointer; background:rgb(189, 221, 240); border-radius:50%"/>
+                <img alt="icon" src="./NewIcons/pageup.png" class="tool-img" id="up-slide" />
                 <span>Slide Up</span>
             </div>
             <div class="tool only-tool slide-control hide" id="tool">
-                <img alt="icon" src="./NewIcons/pagedown.svg" class="tool-img" id="down-slide" style="cursor:pointer; background:rgb(166, 214, 241); border-radius:50%; border-width:1px; border-style:solid; border-color:rgb(104, 104, 211);"/>
+                <img alt="icon" src="./NewIcons/pagedown.png" class="tool-img" id="down-slide"/>
                 <span>Slide Down</span>
             </div>
-            <div class="tool only-tool slide-control hide">
-                <img alt="icon" src="./NewIcons/Addpage.png" class="tool-img" id="add-slide" style="cursor:cell;"/>
-                <span>New Slide</span>
-            </div>
-            <div class="tool only-tool slide-control hide">
-                <img alt="icon" src="./NewIcons/Removepage.png" class="tool-img" id="remove-slide" style="cursor:pointer;"/>
-                <span>Remove Slide</span>
-            </div>
+            
             <div class="tool only-tool canvas-tool hide">
                 <img src="./NewIcons/pencil.png" alt="" class="tool-img" id="pencil"
                     onclick="handleTool('pencil')">
@@ -107,7 +112,7 @@
             </div>
             <div class="tool only-tool media-control hide">
                     <img src="./NewIcons/screenshot.png" alt="icon" id="click-picture" style="cursor:pointer" class="tool-img"/>
-                <span>Save Slide</span>
+                <span>Download Slide</span>
             </div>
             <div class="tool only-tool media-control hide" id="tool">
                         <img src="./NewIcons/gallery.png" id="gallery-button" alt="icon" class="tool-img" style="cursor:pointer"/>
@@ -121,7 +126,7 @@
     </div>
     <div>
         <span class="curr-slide-number"><h5 class="number"></h5></span>
-            <div class="slides close-slides" >
+            <div class="slides close-slides" >   
             </div>
             <div class="complete-board">
                 <canvas class="board"></canvas>

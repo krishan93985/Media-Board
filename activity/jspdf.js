@@ -9,7 +9,7 @@ downloadBtn.addEventListener("click",function(){
 
     for (let i = 0; i < slideArr.length; i++) {
         let img = new Image();
-        img.src = slideArr[i].imageUrl;
+        img.src = slideArr[i].zoomedUrl;
         img.onload = function () {
             const imgWidth = this.width;
             const imgHeight = this.height;
