@@ -23,10 +23,10 @@ let MediaControls = document.querySelectorAll(".media-control");
 let allToolNodes = document.querySelectorAll(".only-tool");
 const warningEl = document.getElementById('warning');
 let saveSlide=document.querySelector("#save-slide");
+let camera = document.querySelector(".camera");
 // console.log(toolPanel.clientHeight);
 
 let firstSlide = slideList[0];
-let camera = document.querySelector(".camera");
 let cameraOn = false;
 
 let mediaRecorder=[];
@@ -174,7 +174,7 @@ minimize.addEventListener("click", function () {
     if (isOpen) {
         textbox.style.display = "none";
     } else {
-        textbox.style.display = "block";
+        textbox.style.display = "flex";
     }
     isOpen = !isOpen;
 })
@@ -514,7 +514,12 @@ captureBtn.addEventListener("click", function (e) {
 camera.addEventListener("click", function () {
   if (!cameraOn) {
     navigator.mediaDevices.getUserMedia(constraints).then(function (mediaStream) {
-      videoPlayer.srcObject = mediaStream;
+      console.log(mediaStream)
+      if('srcObject' in videoPlayer){
+        videoPlayer.srcObject = mediaStream;
+      } else{
+        videoPlayer.src = URL.createObjectURL(mediaStream);
+      }
       mediaRecorder.push(mediaStream);
     })
     camera.src = "./NewIcons/camera-on.png";
@@ -522,31 +527,32 @@ camera.addEventListener("click", function () {
     cameraOn = !cameraOn;
   } else {
     const mediaStream2 = videoPlayer.srcObject;
-
     const tracks = mediaStream2.getTracks();
+    console.log(tracks)
 
+    tracks[0].stop();
     tracks[1].stop();
-    tracks[2].stop();
 
     camera.src = "./NewIcons/camera-off.png";
     videoContainer.classList.remove("video-on");
     cameraOn = !cameraOn;
-
   }
 })
 
-
+  //capture slide
 function capture() {
-    let canvas=document.createElement("canvas");
-    canvas.width=document.body.offsetWidth;
-    canvas.height=document.body.offsetHeight;
-    let tool=canvas.getContext("2d");
-    html2canvas(document.body).then(
-      function (canvas) {
+  html2canvas(document.body).then(
+    function (canvas) {
+        let spareCanvas=document.createElement("canvas");
+        spareCanvas.width=document.body.clientWidth;
+        spareCanvas.height=document.body.clientHeight;
+        let tool=spareCanvas.getContext("2d");
+        tool.fillStyle = "white";
+        tool.fill();
         tool.drawImage(canvas,0, 
           toolPanel.clientHeight, canvasBoard.scrollWidth,canvasBoard.scrollHeight ,0,toolPanel.clientHeight,canvasBoard.scrollWidth, canvasBoard.scrollHeight);
-    let link=canvas.toDataURL();
-    addMediaToGallery(link,"img");
+        let link=spareCanvas.toDataURL();
+        addMediaToGallery(link,"img");
       })
 }
 

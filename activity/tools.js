@@ -20,6 +20,7 @@ function handleTool(tool) {
             pencilOptions.classList.toggle("show");
         }
     } else if (tool == "eraser") {
+        eraserOptions.style.left = "44vw";
         if (activeTool == "eraser") {
             eraserOptions.classList.toggle("show");
         } else {
@@ -43,6 +44,7 @@ function changeColor(color) {
     ctx.strokeStyle = color;
     // send
     socket.emit("colorChange", color);
+    pencilOptions.classList.toggle("show")
 }
 let sliders = document.querySelectorAll("input[type='range']");
 for (let i = 0; i < sliders.length; i++) {

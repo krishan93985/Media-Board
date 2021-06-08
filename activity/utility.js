@@ -15,7 +15,9 @@ function createBox() {
     let stickyPad = document.createElement("div");
     let navBar = document.createElement("div");
     let close = document.createElement("div");
+    close.innerHTML = "&#10006";
     let minimize = document.createElement("div");
+    minimize.innerHTML = "&#8722";
     let textbox = document.createElement("div");
     //    add classes
     stickyPad.setAttribute("class", "stickyPad");
@@ -41,7 +43,7 @@ function createBox() {
         if (isOpen) {
             textbox.style.display = "none";
         } else {
-            textbox.style.display = "block";
+            textbox.style.display = "flex";
         }
         isOpen = !isOpen;
     })

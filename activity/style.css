@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Padauk&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Abel&display=swap');
 
 html,
 body {
@@ -7,10 +8,22 @@ body {
   width:100%;
   height:100%;
   font-family: 'Padauk', sans-serif;
+  background-color: white;
 }
-*{
+/* *{
   box-sizing: border-box;
+} */
+
+*::-webkit-scrollbar{
+  width:0.8rem;
 }
+
+*::-webkit-scrollbar-thumb {
+  background-color: rgb(168, 167, 167);    /* color of the scroll thumb */
+  border-radius: 20px;       /* roundness of the scroll thumb */
+  cursor:pointer;
+}
+
 .app{
   display:flex; 
   flex-direction:column;
@@ -123,7 +136,7 @@ font-size: 0.9rem;
 .active-nav-option{
   border-width:2px 2px;
   border-color:white;
-  /* border-style: dashed; */
+  border-style: dashed;
   background-color: rgb(48, 47, 47);
 }
 
@@ -173,7 +186,7 @@ font-size: 0.9rem;
     position: absolute;
     top: 40vh;
     left: 30vw;
-    background-color: tan;
+    background-color: rgb(179, 93, 160);
     resize:both;
     overflow: auto;
 }
@@ -188,6 +201,7 @@ font-size: 0.9rem;
     justify-content: flex-end;
     align-items: center;
     padding-right: 11px;
+    cursor:grab;
 }
 
 .close,.minimize{
@@ -195,21 +209,38 @@ font-size: 0.9rem;
     width: 10%;
     margin-right: 5px;
     border-radius: 56%;
+    display:flex;
+    justify-content: center;
+    align-items: center;
 }
 .close{
     background: red;
 }
 .minimize{
-    background: green;
+    background: rgb(33, 214, 33);
+    font-size: 1rem;
+}
+
+.minimize,.close{
+    border:1px solid rgb(247, 243, 243);
+    cursor:pointer;
+    text-align:center;
+    color:black;
 }
 
 .textbox{
-    height: 76%;
-    width:96%;
+    height: 80%;
+    width:100%;
+    display:flex;
+    justify-content: center;
 }
 .textbox textarea{
-    height: 100%;
-    width: 100%;
+    height: 95%;
+    width: 95%;
+    font-family: 'Abel', sans-serif;
+    font-size: 100%;
+    font-weight:105%;
+    letter-spacing: 0.1rem;
 }
 .upload-img{
     height:100%;
@@ -308,7 +339,9 @@ font-size: 0.9rem;
     margin:auto;
     margin-top:1.5rem;
     background-color: white;
+    border-radius:8px;
     box-shadow:0.2rem 0.2rem 0.2rem rgb(78, 77, 77);
+    cursor: pointer;
   }
   
   .active-slide{

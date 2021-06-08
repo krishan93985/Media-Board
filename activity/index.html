@@ -21,7 +21,7 @@
             </div>
             <div class="tool-panel nav-options-container">
                 <div class="tool nav-options">
-                    <img alt="icon" src="./NewIcons/slide-controls.png" class="nav-options-img" id="" style="cursor:pointer;"/>
+                    <img alt="icon" src="./NewIcons/page-settings.png" class="nav-options-img" id="" style="cursor:pointer;"/>
                     <span>Slide Controls</span>
                 </div>
                 <div class="tool nav-options mid-tool-style">
@@ -101,7 +101,7 @@
                 <span>Download as PDF</span>
             </div>
             <div class="tool only-tool media-control hide">
-                    <img src="./NewIcons/screen-recording-off.png" alt="icon" id="record-video" class="tool-img"/>
+                <img src="./NewIcons/screen-recording-off.png" alt="icon" id="record-video" class="tool-img"/>
                 <span>Record</span>
                 <div class="audio-settings">
                     <input type="checkbox" id="audioToggle" />
@@ -112,7 +112,7 @@
             </div>
             <div class="tool only-tool media-control hide">
                     <img src="./NewIcons/screenshot.png" alt="icon" id="click-picture" style="cursor:pointer" class="tool-img"/>
-                <span>Download Slide</span>
+                <span>Capture Slide</span>
             </div>
             <div class="tool only-tool media-control hide" id="tool">
                         <img src="./NewIcons/gallery.png" id="gallery-button" alt="icon" class="tool-img" style="cursor:pointer"/>
@@ -153,13 +153,13 @@
 
         let board = document.querySelector(".board");
         let completeBoard=document.querySelector(".complete-board");
-        completeBoard.offsetHeight=board.height = window.innerHeight;
-        completeBoard.offsetWidth=board.width = window.innerWidth;
+        completeBoard.offsetHeight=board.height = window.innerHeight*0.8;
+        completeBoard.offsetWidth=board.width = window.innerWidth*0.8;
         //2d , 3d ,Webgl
         let ctx = board.getContext("2d");
         window.addEventListener("resize", function () {
-            completeBoard.offsetHeight=board.height = window.innerHeight;
-            completeBoard.offsetWidth=board.width = window.innerWidth;
+            completeBoard.offsetHeight=board.height = window.innerHeight*0.8;
+            completeBoard.offsetWidth=board.width = window.innerWidth*0.8;
             // redraw=> redraw
         })
     </script>
