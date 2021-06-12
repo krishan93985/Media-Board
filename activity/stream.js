@@ -17,15 +17,20 @@ window.onload = () => {
     let desktopStream;
 
     const mergeAudioStreams = (desktopStream, voiceStream) => {
+        //creating new audiocontext which is a graph of nodes
         const context = new AudioContext();
+        //creating destination node which can be stored in a file
         const destination = context.createMediaStreamDestination();
         let hasDesktop = false;
         let hasVoice = false;
+        // If you don't want to share Audio from the desktop it should still work with just the voice.
         if (desktopStream && desktopStream.getAudioTracks().length > 0) {
-            // If you don't want to share Audio from the desktop it should still work with just the voice.
+            //creating source node which can be mic or computer
             const source1 = context.createMediaStreamSource(desktopStream);
+            //creates a gain node which can be used to control the overall gain (or volume) of the audio graph.
             const desktopGain = context.createGain();
             desktopGain.gain.value = 0.7;
+            //connects source node to gain node and finally to destination node
             source1.connect(desktopGain).connect(destination);
             hasDesktop = true;
         }
@@ -63,6 +68,7 @@ window.onload = () => {
 
             blobs = [];
 
+            //interface of mediastream api to record media
             rec = new MediaRecorder(stream, { mimeType: 'video/webm; codecs=vp8,opus' });
             rec.ondataavailable = (e) => blobs.push(e.data);
             rec.onstop = async () => {

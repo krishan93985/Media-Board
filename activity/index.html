@@ -12,8 +12,13 @@
   </script>
 </head>
 
-<body>
+<body style="background-color: white;">
     <!-- Drawing board -->
+    <section class="app-fallback hide">
+        <h1>
+            Screen Size is too small to display Media Board<br/> Min Width 900px
+        </h1>
+    </section>
     <div class="app">
         <div class="tool-bar">
             <div class="hamburger">
@@ -129,7 +134,7 @@
             <div class="slides close-slides" >   
             </div>
             <div class="complete-board">
-                <canvas class="board"></canvas>
+                <canvas class="board pencil-cursor"></canvas>
             </div>
     </div>
     </div>
@@ -154,12 +159,14 @@
         let board = document.querySelector(".board");
         let completeBoard=document.querySelector(".complete-board");
         completeBoard.offsetHeight=board.height = window.innerHeight*0.8;
-        completeBoard.offsetWidth=board.width = window.innerWidth*0.8;
+        completeBoard.offsetWidth = window.innerWidth*0.8;
+        board.width = window.innerWidth*0.99;
         //2d , 3d ,Webgl
         let ctx = board.getContext("2d");
         window.addEventListener("resize", function () {
             completeBoard.offsetHeight=board.height = window.innerHeight*0.8;
-            completeBoard.offsetWidth=board.width = window.innerWidth*0.8;
+            completeBoard.offsetWidth = window.innerWidth*0.8;
+            board.width = window.innerWidth*0.99;
             // redraw=> redraw
         })
     </script>

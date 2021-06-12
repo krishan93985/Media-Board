@@ -1,15 +1,20 @@
 
 // press mouse
 let isPenDown = false;
+// [  [ {} ] ]
 let undoArr = [];
+//              slide  allMousePointsOfLastAction
+// redoArr = [ [        [ {},{},..              ],[],...  ],[],... ]
 let redoArr = [];
 for(let i=0;i<100;i++){
     undoArr[i]=[];
     redoArr[i]=[];
 }
 board.addEventListener("mousedown", function (e) {
+    //nothing to redo
+    redoArr[currentSlideIndex] = [];
+    
     // begin path
-
     ctx.beginPath();
     // move to mouse pointers location
     let x = e.clientX;
@@ -29,7 +34,7 @@ board.addEventListener("mousedown", function (e) {
     }
     undoArr[currentSlideIndex].push(mdp);
     //  point => realtime draw
-    socket.emit("md", mdp);
+    //socket.emit("md", mdp);
 })
 // on move
 board.addEventListener("mousemove", function (e) {
@@ -40,8 +45,9 @@ board.addEventListener("mousemove", function (e) {
         let y = e.clientY;
         let top = getLocation();
         y = Number(y) - top;
+        // draw a line to x,y from last coordinates
         ctx.lineTo(x, y);
-        // stroke
+        // stroke renders the path
         ctx.stroke();
         // mouse move
         let mmp = {
@@ -52,7 +58,7 @@ board.addEventListener("mousemove", function (e) {
             width: ctx.lineWidth
         }
         undoArr[currentSlideIndex].push(mmp);
-        socket.emit("mm", mmp);
+      //  socket.emit("mm", mmp);
     }
 })
 window.addEventListener("mouseup", function () {

@@ -171,12 +171,34 @@ const addStickyPadFunctionality = (stickyNode) => {
 let isOpen = true
 // minimize=> 
 minimize.addEventListener("click", function () {
-    if (isOpen) {
-        textbox.style.display = "none";
-    } else {
-        textbox.style.display = "flex";
+  if (isOpen) {
+    let currHeight = "";
+    for(alpha of stickyPad.style.height){
+        if(alpha == "r" || alpha == "p") break;
+        currHeight += alpha;
     }
-    isOpen = !isOpen;
+    currHeight = Number(currHeight);
+    let unit = stickyPad.style.height[stickyPad.style.height.length-1] === "x"?"px":"rem";
+    stickyPad.style.minHeight = currHeight*0.2 + unit;
+    stickyPad.style.height = currHeight*0.2 + unit;
+    console.log(stickyPad.style.height)
+    textbox.style.display = "none";
+    navBar.style.height = "97%";
+} else {
+    let currHeight = "";
+    for(alpha of stickyPad.style.height){
+        if(alpha == "r" || alpha == "p") break;
+        currHeight += alpha;
+    }
+    currHeight = Number(currHeight);
+    let unit = stickyPad.style.height[stickyPad.style.height.length-1] === "x"?"px":"rem";
+    console.log(currHeight)
+    stickyPad.style.minHeight = "10rem";
+    stickyPad.style.height = currHeight*5 + unit;
+    textbox.style.display = "flex";
+    navBar.style.height = "20%";
+}
+isOpen = !isOpen;
 })
 //  move => draw
 let initialX = null;
@@ -449,14 +471,17 @@ const addImageToLastSlide = (element, index) => {
   
   //zoomedUrl to be added
   let canvas=document.createElement("canvas");
-    canvas.width=document.body.offsetWidth;
-    canvas.height=document.body.offsetHeight;
-    let tool=canvas.getContext("2d");
     html2canvas(document.body).then(
       function (canvas) {
+        let spareCanvas=document.createElement("canvas");
+        spareCanvas.width=document.body.clientWidth;
+        spareCanvas.height=document.body.clientHeight;
+        let tool=spareCanvas.getContext("2d");
+        tool.fillStyle = "white";
+        tool.fill();
         tool.drawImage(canvas,0, 
           toolPanel.clientHeight, canvasBoard.scrollWidth,canvasBoard.scrollHeight ,0,toolPanel.clientHeight,canvasBoard.scrollWidth, canvasBoard.scrollHeight);
-    let link=canvas.toDataURL();
+    let link=spareCanvas.toDataURL();
     slideArr[index] = Object.assign({},slideArr[index],{zoomedUrl:link});
     element.src = link;
   })
@@ -574,6 +599,8 @@ function stopCounting() {
   timmingElem.innerText = "00:00:00";
   clearInterval(clearObj);
 }
+
+//drag and drop video element
 let initialX = null;
 let initialY = null;
 let isVidCtnDown = false;

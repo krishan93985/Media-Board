@@ -1,19 +1,24 @@
+// 1. open the database
 let request = indexedDB.open("Camera", 1);
 let db;
 
+//fired when db is opened
 request.onsuccess = function (e) {
   db = request.result;
 };
 
+//fired when db is opened
 request.onerror = function (e) {
   console.log("error");
 };
 
+// 2. fired when database is opened with a new version to create an object store
 request.onupgradeneeded = function (e) {
   db = request.result;
   db.createObjectStore("gallery", { keyPath: "mId" });
 };
 
+// 3. conduct transactions
 function addMediaToGallery(data, type) {
   let tx = db.transaction("gallery", "readwrite");
   let gallery = tx.objectStore("gallery");
@@ -48,7 +53,7 @@ function viewMedia() {
         vidContainer.appendChild(deleteBtn);
         vidContainer.appendChild(downloadBtn);
 
-        video.autoplay = true;
+        video.autoplay = false;
         video.controls = true;
         video.loop = true;
         // video.srcObject = cursor.value.media;

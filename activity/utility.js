@@ -21,7 +21,10 @@ function createBox() {
     let textbox = document.createElement("div");
     //    add classes
     stickyPad.setAttribute("class", "stickyPad");
+    stickyPad.style.height = "14rem";
+    stickyPad.style.minHeight = "10rem";
     navBar.setAttribute("class", "nav-bar");
+    navBar.style.height = "20%";
     close.setAttribute("class", "close");
     minimize.setAttribute("class", "minimize");
     textbox.setAttribute("class", "textbox");
@@ -41,9 +44,31 @@ function createBox() {
     // minimize=> 
     minimize.addEventListener("click", function () {
         if (isOpen) {
+            let currHeight = "";
+            for(alpha of stickyPad.style.height){
+                if(alpha == "r" || alpha == "p") break;
+                currHeight += alpha;
+            }
+            currHeight = Number(currHeight);
+            let unit = stickyPad.style.height[stickyPad.style.height.length-1] === "x"?"px":"rem";
+            stickyPad.style.minHeight = currHeight*0.2 + unit;
+            stickyPad.style.height = currHeight*0.2 + unit;
+            console.log(stickyPad.style.height)
             textbox.style.display = "none";
+            navBar.style.height = "98%";
         } else {
+            let currHeight = "";
+            for(alpha of stickyPad.style.height){
+                if(alpha == "r" || alpha == "p") break;
+                currHeight += alpha;
+            }
+            currHeight = Number(currHeight);
+            let unit = stickyPad.style.height[stickyPad.style.height.length-1] === "x"?"px":"rem";
+            console.log(currHeight)
+            stickyPad.style.minHeight = "10rem";
+            stickyPad.style.height = currHeight*5 + unit;
             textbox.style.display = "flex";
+            navBar.style.height = "20%";
         }
         isOpen = !isOpen;
     })
@@ -55,6 +80,7 @@ function createBox() {
         initialX = e.clientX;
         initialY = e.clientY;
         isStickyDown = true
+        navBar.style.cursor = "grabbing";
     })
     navBar.addEventListener("mousemove", function (e) {
         if (isStickyDown == true) {
@@ -73,6 +99,7 @@ function createBox() {
     //  navBar => mouse pointer up 
     navBar.addEventListener("mouseup", function (e) {
         isStickyDown = false
+        navBar.style.cursor = "grab";
     })
     //  
     navBar.addEventListener("mouseleave", function (e) {

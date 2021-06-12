@@ -30,6 +30,7 @@ function handleTool(tool) {
             eraserOptions.classList.toggle("show");
             pencilOptions.classList.remove("show");
         }
+        canvasBoard.classList.toggle("eraser-cursor");
     } else if (tool == "sticky") {
         createSticky("");
     } else if (tool == "upload") {
@@ -43,7 +44,7 @@ function handleTool(tool) {
 function changeColor(color) {
     ctx.strokeStyle = color;
     // send
-    socket.emit("colorChange", color);
+   // socket.emit("colorChange", color);
     pencilOptions.classList.toggle("show")
 }
 let sliders = document.querySelectorAll("input[type='range']");
