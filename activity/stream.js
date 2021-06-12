@@ -7,7 +7,7 @@ window.onload = () => {
     const micAudioToggle = document.getElementById('micAudioToggle');
     let recordState = false;
 
-    if ('getDisplayMedia' in navigator.mediaDevices) warningEl.style.display = 'none';
+    if (!('getDisplayMedia'  in navigator.mediaDevices)) warningEl.style.display = 'block';
 
     let blobs;
     let blob;
