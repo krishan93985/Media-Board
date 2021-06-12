@@ -522,13 +522,16 @@ const addImageToLastSlide = (element, index) => {
   //change last slide image src
   element.src = url; //src to be changed to zoomedUrl
 }
-saveSlide.addEventListener("click",function(){
+
+const saveCurrentSlide = () => {
   let sheetsArr = document.querySelectorAll(".slide");
   let currentSheetElem = sheetsArr[currentSlideIndex];
-
+  
   addImageToLastSlide(currentSheetElem, currentSlideIndex);
   displayCurrentStickyPads(currentSlideIndex);
-})
+}
+
+saveSlide.addEventListener("click",saveCurrentSlide)
 
 let captureBtn = document.querySelector("#click-picture");
 captureBtn.addEventListener("click", function (e) {

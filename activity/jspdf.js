@@ -1,7 +1,13 @@
 
 let downloadBtn=document.querySelector("#download-pdf");
 
+
 downloadBtn.addEventListener("click",function(){
+    saveCurrentSlide();
+    setTimeout(saveWorkAsPdf,1000);
+})
+
+const saveWorkAsPdf = () => {
     let pdf = new jsPDF('l', 'mm', 'a4');
     const pageWidth = pdf.internal.pageSize.width;
     const pageHeight = pdf.internal.pageSize.height;
@@ -43,4 +49,4 @@ downloadBtn.addEventListener("click",function(){
             }
         }
     }
-})
+}
