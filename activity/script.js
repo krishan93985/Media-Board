@@ -75,12 +75,12 @@ window.addEventListener("load",() => {
       slideElement.classList.add("active-slide");
     
       slidePane.appendChild(slideElement);
-      console.log(slideElement);
+      //console.log(slideElement);
   })
 
   //draw current slide image to canvas
     var image = new Image();
-    console.log(slideArr[currentSlideIndex].imageUrl)
+    //console.log(slideArr[currentSlideIndex].imageUrl)
     image.src = slideArr[currentSlideIndex].imageUrl;
     image.onload = () => {
       ctx.drawImage(image, 0, 0);
@@ -99,7 +99,7 @@ window.addEventListener("load",() => {
     slideElement.classList.add("active-slide");
     slideElement.addEventListener("click", handleActiveSheet);
     slidePane.appendChild(slideElement);
-    console.log(slidePane);
+    //console.log(slidePane);
 }
 
 
@@ -181,7 +181,7 @@ minimize.addEventListener("click", function () {
     let unit = stickyPad.style.height[stickyPad.style.height.length-1] === "x"?"px":"rem";
     stickyPad.style.minHeight = currHeight*0.2 + unit;
     stickyPad.style.height = currHeight*0.2 + unit;
-    console.log(stickyPad.style.height)
+    
     textbox.style.display = "none";
     navBar.style.height = "97%";
 } else {
@@ -192,7 +192,7 @@ minimize.addEventListener("click", function () {
     }
     currHeight = Number(currHeight);
     let unit = stickyPad.style.height[stickyPad.style.height.length-1] === "x"?"px":"rem";
-    console.log(currHeight)
+    
     stickyPad.style.minHeight = "10rem";
     stickyPad.style.height = currHeight*5 + unit;
     textbox.style.display = "flex";
@@ -208,6 +208,7 @@ navBar.addEventListener("mousedown", function (e) {
     initialX = e.clientX;
     initialY = e.clientY;
     isStickyDown = true
+    navBar.style.cursor = "grabbing";
 })
 navBar.addEventListener("mousemove", function (e) {
     if (isStickyDown == true) {
@@ -226,12 +227,13 @@ navBar.addEventListener("mousemove", function (e) {
 //  navBar => mouse pointer up 
 navBar.addEventListener("mouseup", function (e) {
     isStickyDown = false
+    navBar.style.cursor = "grab";
 })
 //  
 navBar.addEventListener("mouseleave", function (e) {
     isStickyDown = false
 }) 
-  console.log(stickyPad)
+  
   return textbox;
 }
 
@@ -241,7 +243,7 @@ const displayCurrentStickyPads = (index) => {
     var doc = parser.parseFromString(stickyPad, 'text/html');
     let stickyNode = doc.body.childNodes[0];
     let node = doc.body.childNodes[0].childNodes[1].childNodes[0];
-    console.log(stickyNode)
+    
     let textbox = addStickyPadFunctionality(stickyNode);
     if(node.nodeName === "TEXTAREA"){
         if(slideArr[index].padsContent[i] !== "" && slideArr[index].padsContent[i])
@@ -466,7 +468,7 @@ const addImageToLastSlide = (element, index) => {
   ctxx.drawImage(canvasBoard, 0, 0);
 
   const url = c.toDataURL("image/png;base64");
-  console.log(slideArr)
+  //console.log(slideArr)
   slideArr[index] = Object.assign({},slideArr[index],{imageUrl:url});
   
   //zoomedUrl to be added
@@ -493,7 +495,7 @@ const addImageToLastSlide = (element, index) => {
   let stickyPadsArray = Array.prototype.slice.call(currentStickyPads);
   stickyPadsArray = stickyPadsArray.map(element => element.outerHTML)
   slideArr[index].stickyPads = stickyPadsArray;
-  console.log(stickyPadsArray)
+  //console.log(stickyPadsArray)
   
   //store sticky pads content in slideArr
   let tempPadsContent = [];
@@ -507,7 +509,7 @@ const addImageToLastSlide = (element, index) => {
   })
   slideArr[index].padsContent = tempPadsContent;
 
-  console.log(slideArr[index].padsContent)
+  //console.log(slideArr[index].padsContent)
   
   //update slideArr in localstorage
   window.localStorage.setItem("slideArr",JSON.stringify(slideArr));
@@ -525,6 +527,7 @@ saveSlide.addEventListener("click",function(){
   let currentSheetElem = sheetsArr[currentSlideIndex];
 
   addImageToLastSlide(currentSheetElem, currentSlideIndex);
+  displayCurrentStickyPads(currentSlideIndex);
 })
 
 let captureBtn = document.querySelector("#click-picture");
@@ -539,7 +542,7 @@ captureBtn.addEventListener("click", function (e) {
 camera.addEventListener("click", function () {
   if (!cameraOn) {
     navigator.mediaDevices.getUserMedia(constraints).then(function (mediaStream) {
-      console.log(mediaStream)
+      //console.log(mediaStream)
       if('srcObject' in videoPlayer){
         videoPlayer.srcObject = mediaStream;
       } else{
@@ -553,7 +556,7 @@ camera.addEventListener("click", function () {
   } else {
     const mediaStream2 = videoPlayer.srcObject;
     const tracks = mediaStream2.getTracks();
-    console.log(tracks)
+    //console.log(tracks)
 
     tracks[0].stop();
     tracks[1].stop();
@@ -611,12 +614,17 @@ videoPlayer.addEventListener("mousedown", function (e) {
 })
 videoPlayer.addEventListener("mousemove", function (e) {
   if (isVidCtnDown == true) {
+    let body = document.querySelector("body");
+    //if video element is going out of canvas
+    let { top, left, right, bottom } = videoContainer.getBoundingClientRect();
+    
     let finalX = e.clientX;
     let finalY = e.clientY;
     let dX = finalX - initialX;
     let dY = finalY - initialY;
-    //  
-    let { top, left } = videoContainer.getBoundingClientRect();
+    if((right+dX) >= body.clientWidth || (bottom+dY) >= body.clientHeight) 
+      return;
+    
     videoContainer.style.top = top + dY + "px";
     videoContainer.style.left = left + dX + "px";
     initialX = finalX;
