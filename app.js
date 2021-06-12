@@ -2,11 +2,12 @@
 const express = require("express");
 const app = express();
 // server
-const httpServer = require("http").createServer(app);
-const socketServer = require("socket.io")(httpServer);
+// const httpServer = require("http").createServer(app);
+// const socketServer = require("socket.io")(httpServer);
 // const path = require("path");
 // /client
 app.use(express.static("activity"));
+const PORT = process.env.PORT || 3000;
 // socketServer.on("connection", function (socket) {
 //     console.log("New client connected")
 //     console.log(socket.id);
@@ -25,8 +26,8 @@ app.use(express.static("activity"));
 //     })
 // })
 //  tcp => uniquely identify server on a machine
-httpServer.listen(3000, function () {
-    console.log("Server is listening to request at port 3000");
+app.listen(PORT, function () {
+    console.log(`Server is listening to request at port ${PORT}`);
 })
 
 
