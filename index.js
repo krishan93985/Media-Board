@@ -6,8 +6,12 @@ const app = express();
 // const socketServer = require("socket.io")(httpServer);
 // const path = require("path");
 // /client
-app.use(express.static("activity"));
+app.use(express.static(__dirname + "/activity"));
 const PORT = process.env.PORT || 3000;
+
+app.get("/",(req,res) => {
+    res.status(200).send("index.html");
+})
 // socketServer.on("connection", function (socket) {
 //     console.log("New client connected")
 //     console.log(socket.id);
