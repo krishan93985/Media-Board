@@ -105,14 +105,20 @@
                 <img src="./NewIcons/download.png" alt="" class="tool-img" id="download-pdf" onclick="handleTool('download')">
                 <span>Download as PDF</span>
             </div>
-            <div class="tool only-tool media-control hide">
-                <img src="./NewIcons/screen-recording-off.png" alt="icon" id="record-video" class="tool-img"/>
-                <span>Record</span>
+            <div class="recording-tool only-tool media-control hide">
+                <div class="recording-icon">
+                    <img src="./NewIcons/screen-recording-off.png" alt="icon" id="record-video" class="tool-img"/>
+                    <span>Record</span>
+                </div>
                 <div class="audio-settings">
-                    <input type="checkbox" id="audioToggle" />
-                    <label for="audioToggle">Capture Computer Audio</label>
-                    <input type="checkbox" id="micAudioToggle" />
-                    <label for="micAudioToggle">Capture Microphone Audio</label>
+                    <div style="display:flex; flex-direction: column;">
+                        <input type="checkbox" id="audioToggle" />
+                        <label for="audioToggle">Capture Computer Audio</label>
+                    </div>
+                    <div style="display:flex; flex-direction: column;">
+                        <input type="checkbox" id="micAudioToggle" />
+                        <label for="micAudioToggle">Capture Microphone Audio</label>
+                    </div>
                 </div>
             </div>
             <div class="tool only-tool media-control hide">
@@ -148,6 +154,7 @@
     
           <!-- C5.1.A  -->
     
+          <script src="script.js"></script>
     <script>
             // C5.1.B
         let galleryBtn = document.querySelector("#gallery-button");
@@ -158,15 +165,40 @@
 
         let board = document.querySelector(".board");
         let completeBoard=document.querySelector(".complete-board");
-        completeBoard.offsetHeight=board.height = window.innerHeight*0.8;
+        completeBoard.offsetHeight=board.height = window.innerHeight*0.85;
         completeBoard.offsetWidth = window.innerWidth*0.8;
         board.width = window.innerWidth*0.99;
         //2d , 3d ,Webgl
         let ctx = board.getContext("2d");
+        var smoothResize;
+        const reprint = () => {
+            ctx.clearRect(0, 0, board.clientWidth, board.clientHeight);
+            var tempImg = new Image();
+            let dataURL = board.toDataURL();
+            tempImg.src = slideArr[currentSlideIndex].imageUrl;
+            tempImg.addEventListener("load",() => {
+                ctx.drawImage(tempImg,0,0,board.clientWidth,board.clientHeight);
+            })
+            redraw();
+            let currentStickyPads = document.querySelectorAll(".stickyPad");
+  
+              //store current sticky pads in slideArr
+            let stickyPadsArray = Array.prototype.slice.call(currentStickyPads);
+            stickyPadsArray = stickyPadsArray.map(element => element.outerHTML)
+            slideArr[currentSlideIndex].stickyPads = stickyPadsArray;
+    
+            for(stickyPad of currentStickyPads){
+                document.body.removeChild(stickyPad);
+            }
+            displayCurrentStickyPads(currentSlideIndex);
+        }
         window.addEventListener("resize", function () {
-            completeBoard.offsetHeight=board.height = window.innerHeight*0.8;
+            completeBoard.offsetHeight = window.innerHeight*0.85;
             completeBoard.offsetWidth = window.innerWidth*0.8;
             board.width = window.innerWidth*0.99;
+            clearTimeout(smoothResize);
+            smoothResize = setTimeout(reprint,100)
+            
             // redraw=> redraw
         })
     </script>
@@ -178,7 +210,6 @@
     <script src="canvas.js"></script>
     <script src="reciever.js"></script>
     <script src="dbScript.js"></script>
-    <script src="script.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.2/jspdf.min.js"></script>
     <script src="jspdf.js"></script>
     <script src="stream.js"></script>

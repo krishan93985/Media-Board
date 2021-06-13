@@ -90,8 +90,10 @@ function createBox() {
             let dY = finalY - initialY;
             //  
             let { top, left } = stickyPad.getBoundingClientRect();
-            stickyPad.style.top = top + dY + "px";
-            stickyPad.style.left = left + dX + "px";
+            let topVH = (( top + dY )*100) / window.innerHeight;
+            let leftVW = (( left + dX )*100) / window.innerWidth;
+            stickyPad.style.top = topVH + "vh";
+            stickyPad.style.left = leftVW + "vw";
             initialX = finalX;
             initialY = finalY;
         }

@@ -64,7 +64,7 @@ justify-content:space-evenly;
 align-items:center;
 overflow-y: auto;
 }
-.tool{
+.tool,.recording-tool,.recording-icon{
 height: 4rem;
 width:6rem;
 display:flex;
@@ -75,7 +75,17 @@ margin:0.6rem 0.5rem;
 font-size: 0.9rem;
 }
 
-.tool span{
+.recording-tool{
+  width:8rem;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.recording-icon{
+  width:5rem;
+}
+
+.tool span,.recording-icon span{
   color:white;
   margin-top:0.1rem;
   text-align: center;

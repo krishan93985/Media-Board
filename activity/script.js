@@ -35,7 +35,6 @@ let isSlidesOpen = false;
 let currentSlideIndex = 0;
 let lastToolboxIndex = -1;
 let allNavTools = [slideContols,canvasTools,MediaControls];
-
 const newSlideInfo = {
   imageUrl:"./NewIcons/new-sheet.jpeg",
   zoomedUrl:"./NewIcons/new-sheet.jpeg",
@@ -67,6 +66,7 @@ window.addEventListener("load",() => {
     
     const slideElement = document.createElement("img");
     slideElement.setAttribute("src",`${slide.zoomedUrl}`);
+    console.log(slide.zoomedUrl)
     slideElement.setAttribute("alt","slide");
     slideElement.setAttribute("class","slide");
     slideElement.addEventListener("click",handleActiveSheet);
@@ -218,8 +218,10 @@ navBar.addEventListener("mousemove", function (e) {
         let dY = finalY - initialY;
         //  
         let { top, left } = stickyPad.getBoundingClientRect();
-        stickyPad.style.top = top + dY + "px";
-        stickyPad.style.left = left + dX + "px";
+        let topVH = (( top + dY )*100) / window.innerHeight;
+        let leftVW = (( left + dX )*100) / window.innerWidth;
+        stickyPad.style.top = topVH + "vh";
+        stickyPad.style.left = leftVW + "vw";
         initialX = finalX;
         initialY = finalY;
     }
@@ -526,8 +528,10 @@ const addImageToLastSlide = (element, index) => {
 const saveCurrentSlide = () => {
   let sheetsArr = document.querySelectorAll(".slide");
   let currentSheetElem = sheetsArr[currentSlideIndex];
-  
   addImageToLastSlide(currentSheetElem, currentSlideIndex);
+  window.localStorage.setItem("slideArr",JSON.stringify(slideArr));
+  window.localStorage.setItem("currentSlideIndex",JSON.stringify(currentSlideIndex));
+  
   displayCurrentStickyPads(currentSlideIndex);
 }
 
