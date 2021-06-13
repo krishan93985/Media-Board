@@ -97,7 +97,12 @@ window.onload = () => {
             rec.stop();
             recordState=!recordState;
 
+            //stopping screen video rec., (mic + screen audio) destination node tracks
             stream.getTracks().forEach(s => s.stop())
+            //stopping screen audio source node track
+            desktopStream.getAudioTracks().forEach(s => s.stop())
+            //stopping mic source node track
+            voiceStream.getAudioTracks().forEach(s => s.stop())
             stream = null;
         }
     }
