@@ -1,4 +1,4 @@
-let constraints = { video: true, audio: true };
+let constraints = { video: { facingMode:{exact:"user"} }, audio: { echoCancellation:true } };
 
 let videoContainer = document.querySelector(".video-container")
 let timmingElem = document.querySelector("#timming");

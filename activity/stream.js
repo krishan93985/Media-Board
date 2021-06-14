@@ -48,8 +48,9 @@ window.onload = () => {
 
     vidRecordBtn.onclick = async () => {
             if (recordState == false) {
+            const voiceRecordConstraints = { echoCancellation:true }
             const audio = audioToggle.checked || false;
-            const mic = micAudioToggle.checked || false;
+            const mic = micAudioToggle.checked?voiceRecordConstraints:false;
 
             desktopStream = await navigator.mediaDevices.getDisplayMedia({ video: true, audio: audio });
 
