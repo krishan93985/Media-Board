@@ -54,9 +54,7 @@ window.onload = () => {
 
             desktopStream = await navigator.mediaDevices.getDisplayMedia({ video: true, audio: audio });
 
-            if (mic === true) {
-                voiceStream = await navigator.mediaDevices.getUserMedia({ video: false, audio: mic });
-            }
+            voiceStream = await navigator.mediaDevices.getUserMedia({ video: false, audio: mic });
 
             const tracks = [
                 ...desktopStream.getVideoTracks(),
